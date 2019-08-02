@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     cryptmessages.cpp \
     mainwindow.cpp \
     Logger/FileLoger.cpp \
-    Logger/Loger.cpp
+    Logger/Loger.cpp \
+    startup.cpp
 
 HEADERS  += mainwindow.h \
     ConnectionFactory.hpp \
@@ -34,9 +35,12 @@ HEADERS  += mainwindow.h \
     StringProtocolConnector.hpp \
     credentials.hpp \
     cryptMessages.hpp \
-    middlewareInterface.hpp
+    middlewareInterface.hpp \
+    startup.hpp
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    Startup.ui \
+    startup.ui
 
 DISTFILES +=
 

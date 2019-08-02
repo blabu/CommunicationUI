@@ -35,14 +35,19 @@ public:
     ~StringProtocolConnector() {globalLog.addLog(Loger::L_TRACE, "Destroy StringProtocolConnector");}
 signals:
     void initOk();
+    void initFail();
+    void registerOk();
+    void registerFail();
+
+    void disconnectedRemoteSignal();
     void connectOk();
     void received(QString m);
-    void disconnectedRemoteSignal();
 public slots:
     void init(const Credentials& cr);
+    void registered(const Credentials& cr);
     void connect(const Credentials& cr);
-    void close();
     void sendTo(const QString& message);
+    void close();
 };
 
 #endif // PROTOCOLBASE_HPP

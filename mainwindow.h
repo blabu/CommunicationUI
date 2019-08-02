@@ -1,7 +1,6 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QGraphicsScene>
 #include <QMainWindow>
 #include <QString>
 #include <QEvent>
@@ -13,33 +12,30 @@ namespace Ui {
 class MainWindow;
 }
 
-#include <QTimer>
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private slots:
-    void initButtonPressed();
     void connectButtonPressed();
     void showText(const QString& m, bool isSendedByMe);
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setUserID(const QString& id) { this->setWindowTitle("Welcome " + id); cr.id = id; }
+    void setServer(const QString& ip, const QString& port) {cr.serverAddr=ip; cr.serverPort=port;}
 signals:
-    void TryConnect(const Credentials& ctx);
-    void TryInit(const Credentials& ctx);
+    void tryConnect(const Credentials& ctx);
     void pressedDisconnect();
-    void sendTextMessages(QString msg);
+    void sendText(QString msg);
 public slots:
-    void newTextMessageReceived(const QString& message);
+    void receiveText(const QString& message);
     void disconnect();
     void connectionFine();
-    void initFine();
 private:
     Ui::MainWindow *ui;
     QMutex uiMtx;
     Credentials cr;
     std::atomic<bool> isConnected;
-    bool checkBaseCredential();
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
 };

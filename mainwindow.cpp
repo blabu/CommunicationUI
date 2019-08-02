@@ -7,16 +7,6 @@
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 
-bool MainWindow::checkBaseCredential(){
-    if(ui->IP->text().isNull() || ui->IP->text().isEmpty()) { ui->IP->setStyleSheet("border: 1px solid red"); return false; }
-    if(ui->Port->text().isNull() || ui->Port->text().isEmpty()) { ui->Port->setStyleSheet("border: 1px solid red"); return false; }
-    if(ui->Id->text().isNull() || ui->Id->text().isEmpty()) { ui->Id->setStyleSheet("border: 1px solid red"); return false; }
-    ui->Id->setStyleSheet("border : solid black");
-    ui->Port->setStyleSheet("border : solid black");
-    ui->IP->setStyleSheet("border : solid black");
-    return true;
-}
-
 //Обработчик по нажатию кнопок
 void MainWindow::keyPressEvent(QKeyEvent *event){
     auto key = event->key();
@@ -25,39 +15,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
         if(isConnected.load()) {
             auto text = ui->transmitMsg->text();
             showText(text, true);
-            emit sendTextMessages(text);
+            emit sendText(text);
         } else {
-            if(ui->Identifier->text().isNull() || ui->Identifier->text().isEmpty() ||
-                    ui->password->text().isNull() || ui->password->text().isEmpty()) {
-                initButtonPressed();
-            } else {
-                connectButtonPressed();
-            }
+            connectButtonPressed();
         }
     }
 }
 
-// Check all input value and emmit signal
-void MainWindow::initButtonPressed(){
-    if(checkBaseCredential()) {
-        cr.id = ui->Id->text();
-        cr.password = ui->password->text();
-        cr.serverAddr = ui->IP->text();
-        cr.serverPort = ui->Port->text();
-        ui->Identifier->clear();
-        emit TryInit(cr);
-    }
-}
-
 void MainWindow::connectButtonPressed() {
-    if(checkBaseCredential()) {
-        cr.id = ui->Id->text();
-        cr.password = ui->password->text();
-        cr.serverAddr = ui->IP->text();
-        cr.serverPort = ui->Port->text();
-        cr.identifierTo = ui->Identifier->text();
-        emit TryConnect(cr);
-    }
+    cr.password = ui->password->text();
+    cr.identifierTo = ui->Identifier->text();
+    if(!cr.password.isEmpty() && !cr.identifierTo.isEmpty()) emit tryConnect(cr);
 }
 
 void MainWindow::showText(const QString &m, bool isSendedByMe){
@@ -71,7 +39,7 @@ void MainWindow::showText(const QString &m, bool isSendedByMe){
     uiMtx.unlock();
 }
 
-void MainWindow::newTextMessageReceived(const QString& message) {
+void MainWindow::receiveText(const QString& message) {
     showText(message, false);
 }
 
@@ -79,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    QObject::connect(ui->Init, SIGNAL(pressed()), this, SLOT(initButtonPressed()));
     QObject::connect(ui->Connect, SIGNAL(pressed()), this, SLOT(connectButtonPressed()));
     QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
     QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
@@ -91,38 +58,21 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::disconnect() {
-    ui->IP->setReadOnly(false);
-    ui->Port->setReadOnly(false);
-    ui->Id->setReadOnly(false);
     ui->password->setReadOnly(false);
     ui->Identifier->setReadOnly(false);
-
     ui->transmitMsg->setReadOnly(true);
-
     ui->Connect->setEnabled(true);
-    ui->Init->setEnabled(true);
     ui->Disconnect->setEnabled(false);
     isConnected.store(false);
+    globalLog.addLog(Loger::L_INFO, "Ui Disconnect slot");
 }
 
 void MainWindow::connectionFine() {
-    ui->IP->setReadOnly(true);
-    ui->Port->setReadOnly(true);
-    ui->Id->setReadOnly(true);
     ui->password->setReadOnly(true);
     ui->Identifier->setReadOnly(true);
     ui->transmitMsg->setReadOnly(false);
     ui->Connect->setEnabled(false);
-    ui->Init->setEnabled(false);
     ui->Disconnect->setEnabled(true);
     isConnected.store(true);
     globalLog.addLog(Loger::L_INFO, "Connection fine!!!!");
-}
-
-void MainWindow::initFine() {
-    ui->IP->setReadOnly(true);
-    ui->Port->setReadOnly(true);
-    ui->Id->setReadOnly(true);
-    ui->Init->setEnabled(false);
-    ui->Disconnect->setEnabled(true);
 }

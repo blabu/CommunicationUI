@@ -71,20 +71,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>/?id=</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="Id">
-          <property name="placeholderText">
-           <string notr="true">Identifier</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Connect string</string>
@@ -128,13 +114,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="Init">
-          <property name="text">
-           <string>Init</string>
-          </property>
-         </widget>
         </item>
         <item>
          <widget class="QLineEdit" name="Identifier">
