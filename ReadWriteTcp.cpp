@@ -1,7 +1,7 @@
 #include "ReadWriteTcp.hpp"
 #include "MainProjectLoger.hpp"
 
-ReadWriteTcp::ReadWriteTcp(std::shared_ptr<QTcpSocket> sock): socket(sock), isConnected(true) {
+ReadWriteTcp::ReadWriteTcp(std::shared_ptr<QTcpSocket> sock): socket(sock) {
     QObject::connect(socket.get(), SIGNAL(readyRead()),this, SLOT(readHandler()));
 }
 
@@ -53,12 +53,11 @@ void ReadWriteTcp::registerDisconnectEvent(std::function<void ()> handler) {
 }
 
 void ReadWriteTcp::write(const QByteArray &m) {
-    if(isConnected.load() && socket->isOpen()) socket->write(m);
+    if(socket != nullptr && socket.get() != nullptr && socket->isOpen()) socket->write(m);
 }
 
 void ReadWriteTcp::closeConnectionHandler() {
     QObject::disconnect(socket.get(), SIGNAL(readyRead()),this, SLOT(readHandler()));
     QObject::disconnect(socket.get(), SIGNAL(disconnected()), this, SLOT(closeConnectionHandler()));
-    isConnected.store(false);
     globalLog.addLog(Loger::L_TRACE, "closeConnectionHandler executes");
 }

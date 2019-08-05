@@ -5,7 +5,8 @@
 #include "botan/hex.h"
 #include "MainProjectLoger.hpp"
 
-cryptMessages::cryptMessages(std::string pass, std::shared_ptr<middlewareInterface> d) : delegate(d), isConnected(true) {
+cryptMessages::cryptMessages(std::string pass, std::shared_ptr<middlewareInterface> d) : delegate(d) {
+    globalLog.addLog(Loger::L_TRACE, "Wrap connection to cryption");
     auto c = Botan::SHA_512().process(pass);
     memcpy(cypherKey,c.data(),32);
     memcpy(nonce,c.data()+32,32);
@@ -22,19 +23,15 @@ cryptMessages::cryptMessages(std::string pass, std::shared_ptr<middlewareInterfa
 }
 
 void cryptMessages::write(const QByteArray & m) {
-    if(!isConnected) {
-        delegate->write(m);
-    } else {
-        globalLog.addLog(Loger::L_TRACE, "Encrypt write message ", m.toStdString());
-        enc->start_msg(nonce,enc->default_nonce_length());
-        QByteArray b(m);
-        Botan::secure_vector<uint8_t> res(b.data(), b.data() + b.size());
-        enc->finish(res);
-        globalLog.addLog(Loger::L_TRACE, "Send encrypted message ", Botan::hex_encode(res));
-        std::string codedResult = Botan::base64_encode(res);
-        codedResult.push_back('\n');
-        delegate->write(QByteArray(codedResult.data(), (unsigned int)codedResult.size()));
-    }
+    globalLog.addLog(Loger::L_TRACE, "Encrypt write message ", m.toStdString());
+    enc->start_msg(nonce,enc->default_nonce_length());
+    QByteArray b(m);
+    Botan::secure_vector<uint8_t> res(b.data(), b.data() + b.size());
+    enc->finish(res);
+    globalLog.addLog(Loger::L_TRACE, "Send encrypted message ", Botan::hex_encode(res));
+    std::string codedResult = Botan::base64_encode(res);
+    codedResult.push_back('\n');
+    delegate->write(QByteArray(codedResult.data(), (unsigned int)codedResult.size()));
 }
 
 void cryptMessages::read(std::function<void (const QByteArray)> handler) {
@@ -65,6 +62,6 @@ void cryptMessages::read(std::function<void (const QByteArray)> handler) {
 }
 
 void cryptMessages::registerDisconnectEvent(std::function<void ()> handler) {
-    delegate->registerDisconnectEvent([handler, this](){this->isConnected = false; handler();});
+    delegate->registerDisconnectEvent([handler](){if(handler != nullptr) handler();});
 }
 

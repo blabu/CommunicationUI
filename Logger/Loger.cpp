@@ -132,7 +132,7 @@ void Loger::addLog(uint8_t logLevel, const std::string&& str) {
     std::string time = FileLoger::getTimeName(FileLoger::seconds);
     std::string data(symb+time+symb+"<"+TAG+">"+symb+str+symb+"\n");
 	if (logLevel <= showLevel) {
-		std::cout << data << std::endl;
+        std::cout << level[logLevel] << data << std::endl;
 	}
 	logerArray[logLevel]->addLog(std::move(data));
 }
@@ -144,7 +144,7 @@ void Loger::addLog(uint8_t logLevel, const std::string& str) {
 	std::string time = FileLoger::getTimeName(FileLoger::seconds);
 	std::string data(symb + time + symb + "<" + TAG + ">" + symb + str + symb + "\n");
 	if (logLevel <= showLevel) {
-		std::cout << data << std::endl;
+        std::cout << level[logLevel] << data << std::endl;
 	}
 	logerArray[logLevel]->addLog(std::move(data));
 }

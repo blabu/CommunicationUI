@@ -19,6 +19,19 @@ int main(int argc, char *argv[]) {
     StartUp start(&w);
     start.show();
     StringProtocolConnector protocol;
+    QObject::connect(&start, SIGNAL(tryInit(const Credentials&)), &protocol, SLOT(init(const Credentials&)));
+    QObject::connect(&start, SIGNAL(tryRegister(const Credentials&)), &protocol, SLOT(registered(const Credentials&)));
+
+    // IF disconected
+    QObject::connect(&protocol, SIGNAL(initFail()), &start, SLOT(disableMainWindow()));
+    QObject::connect(&protocol, SIGNAL(registerFail()), &start, SLOT(disableMainWindow()));
+    QObject::connect(&protocol, SIGNAL(disconnectedRemoteSignal()), &start, SLOT(disableMainWindow()));
+
+    // If connection fine
+    QObject::connect(&protocol, SIGNAL(initOk()), &start, SLOT(enableMainWindow()));
+    QObject::connect(&protocol, SIGNAL(registerOk()), &start, SLOT(enableMainWindow()));
+
+
 //    QObject::connect(&w, SIGNAL(TryConnect(const Credentials&)), protocol, SLOT(connect(const Credentials&)));
 //    QObject::connect(&w, SIGNAL(TryInit(const Credentials&)), protocol, SLOT(init(const Credentials&)));
 //    QObject::connect(protocol, SIGNAL(initOk()), &w, SLOT(initFine()));

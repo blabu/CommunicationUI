@@ -18,7 +18,6 @@ private:
     std::shared_ptr<QTcpSocket> socket;
     std::mutex readFuncMtx;
     std::function<void(const QByteArray)> readCallBack;
-    std::atomic<bool> isConnected;
 private slots:
     void readHandler();
     void closeConnectionHandler();

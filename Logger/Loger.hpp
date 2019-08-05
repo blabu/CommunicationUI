@@ -35,7 +35,7 @@ public:
     static void setShowLevel(const std::string& lvl);
     static void snapShot();
     static void snapShotLong();
-    ~Loger();
+    virtual ~Loger();
 	void addLog(std::uint8_t logLevel, const std::string &str);
     void addLog(std::uint8_t logLevel, const std::string &&str);
     void addLog(std::uint8_t logLevel, const std::string &str1, const std::string &str2);

@@ -21,7 +21,7 @@ StartUp::~StartUp() {
 
 void StartUp::enableMainWindow() {
     this->hide();
-    window->setUserID(ctx.id);
+    window->setUserID(ctx.id, ctx.password);
     window->setServer(ctx.serverAddr, ctx.serverPort);
     window->show();
     return;
@@ -29,7 +29,7 @@ void StartUp::enableMainWindow() {
 void StartUp::disableMainWindow() {
     window->hide();
     window->disconnect();
-    window->setUserID(QString());
+    window->setUserID(QString(), QString());
     window->setServer(QString(),QString());
     ui->loginBtn->setEnabled(true);
     ui->registerBtn->setEnabled(true);
@@ -52,7 +52,7 @@ bool StartUp::checkBaseCredential() {
 
 void StartUp::init() {
     if(checkBaseCredential()) {
-        globalLog.addLog(Loger::L_TRACE, "Try init");
+        globalLog.addLog(Loger::L_TRACE, "startUp Try init");
         ctx.id = ui->login->text();
         ctx.password = ui->pass->text();
         ctx.serverAddr = ui->IP->text();
@@ -65,7 +65,7 @@ void StartUp::init() {
 
 void StartUp::reg() {
     if(checkBaseCredential()) {
-        globalLog.addLog(Loger::L_TRACE, "Try register");
+        globalLog.addLog(Loger::L_TRACE, "startUp Try register");
         ctx.id = ui->login->text();
         ctx.password = ui->pass->text();
         ctx.serverAddr = ui->IP->text();

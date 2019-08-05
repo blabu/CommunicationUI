@@ -6,16 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>314</width>
+    <width>346</width>
     <height>182</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::TabFocus</enum>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Init</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="baseLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>

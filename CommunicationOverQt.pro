@@ -41,8 +41,7 @@ HEADERS  += mainwindow.h \
     startup.hpp
 
 FORMS    += mainwindow.ui \
-    Startup.ui \
-    startup.ui
+            Startup.ui
 
 DISTFILES +=
 
