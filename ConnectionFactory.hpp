@@ -7,6 +7,6 @@ class ConnectionFactory : public QObject {
     Q_OBJECT
 public:
     // Синхронный вызов а возвращает nullptr
-    static ReadWriteTcp* makeTCP(const Credentials& cr, int msTimeout);
+    static ReadWriteTcp* makeTCP(const QString ip, const QString port, int msTimeout);
 };
 #endif // TCPCONNECTION_HPP

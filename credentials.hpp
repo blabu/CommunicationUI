@@ -6,6 +6,7 @@
 struct Credentials {
     QString id;
     QString password;
+    QString sessionKey;
     QString identifierTo;
     QString serverAddr;
     QString serverPort;

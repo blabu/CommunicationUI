@@ -2,18 +2,12 @@
 #include "cryptMessages.hpp"
 #include <binders.h>
 
-const QString StringProtocolConnector::initMessage("$V14=");
-const QString StringProtocolConnector::initOkMessage("$V14=INIT OK;\n");
-const QString StringProtocolConnector::connectMessage("$V13=");
-const QString StringProtocolConnector::connectOkMessage("$V13=CONNECT OK;\n");
-const QString StringProtocolConnector::pingCMD("$V12=");
-
 StringProtocolConnector::StringProtocolConnector(QObject *parent) : QObject(parent){
 }
 
 void StringProtocolConnector::init(const Credentials &cr) {
     this->cr = cr;
-    con = std::shared_ptr<middlewareInterface>(ConnectionFactory::makeTCP(cr, 1000));
+    con = std::shared_ptr<middlewareInterface>(ConnectionFactory::makeTCP(cr.serverAddr, cr.serverPort, 1000));
     if(con.get() != nullptr) {
         con->registerDisconnectEvent([this](){
             globalLog.addLog(Loger::L_TRACE,"Emit disconnect remote signal");
@@ -26,10 +20,14 @@ void StringProtocolConnector::init(const Credentials &cr) {
     }
 }
 
+void StringProtocolConnector::registered(const Credentials &cr) {
+
+}
+
 void StringProtocolConnector::connect(const Credentials &cr) {
     this->cr = cr;
     con = nullptr;
-    con = std::shared_ptr<middlewareInterface>(ConnectionFactory::makeTCP(cr, 1000));
+    con = std::shared_ptr<middlewareInterface>(ConnectionFactory::makeTCP(cr.serverAddr, cr.serverPort, 1000));
     if(con.get() != nullptr) {
         con->registerDisconnectEvent([this](){
             globalLog.addLog(Loger::L_TRACE,"Emit disconnect remote signal");
@@ -99,3 +97,4 @@ void StringProtocolConnector::disablePing() {
     QObject::disconnect(pingConnection);
     ping.stop();
 }
+

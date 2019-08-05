@@ -21,7 +21,7 @@ private slots:
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void setUserID(const QString& id) { this->setWindowTitle("Welcome " + id); cr.id = id; }
+    void setUserID(const QString& id, const QString& pass) { this->setWindowTitle("Welcome " + id); cr.id = id; cr.password = pass;}
     void setServer(const QString& ip, const QString& port) {cr.serverAddr=ip; cr.serverPort=port;}
 signals:
     void tryConnect(const Credentials& ctx);

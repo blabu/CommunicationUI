@@ -15,6 +15,7 @@ private slots:
     void initAck(const QByteArray& b);
     void connectAck(const QByteArray& b);
 private:
+    static const QString registerMessage;
     static const QString initMessage;
     static const QString initOkMessage;
     static const QString connectMessage;

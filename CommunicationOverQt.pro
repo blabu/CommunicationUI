@@ -15,6 +15,7 @@ CONFIG += static
 
 SOURCES += main.cpp\
     ConnectionFactory.cpp \
+    Protocol.cpp \
     ReadWriteTcp.cpp \
     StringProtocolConnector.cpp \
     cryptmessages.cpp \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     Logger/Loger.hpp \
     Logger/StatusInterface.hpp \
     MainProjectLoger.hpp \ \
+    Protocol.h \
     ReadWriteTcp.hpp \
     StringProtocolConnector.hpp \
     credentials.hpp \
@@ -44,9 +46,9 @@ FORMS    += mainwindow.ui \
 
 DISTFILES +=
 
-LIBS += -L$$PWD/../../../IDE/botan-2.10.0/ -lbotan-2
+LIBS += -L$$PWD/vendor/lib/ -lbotan-2
 
-INCLUDEPATH += $$PWD/../../../IDE/botan-2.10.0/build/include
-DEPENDPATH += $$PWD/../../../IDE/botan-2.10.0/build/include
+INCLUDEPATH += $$PWD/vendor/inc
+DEPENDPATH += $$PWD/vendor/inc
 
-PRE_TARGETDEPS += $$PWD/../../../IDE/botan-2.10.0/libbotan-2.a
+PRE_TARGETDEPS += $$PWD/vendor/lib/libbotan-2.a

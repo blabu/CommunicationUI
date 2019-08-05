@@ -23,9 +23,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 }
 
 void MainWindow::connectButtonPressed() {
-    cr.password = ui->password->text();
+    cr.sessionKey = ui->password->text();
     cr.identifierTo = ui->Identifier->text();
-    if(!cr.password.isEmpty() && !cr.identifierTo.isEmpty()) emit tryConnect(cr);
+    if(!cr.sessionKey.isEmpty() && !cr.identifierTo.isEmpty()) emit tryConnect(cr);
 }
 
 void MainWindow::showText(const QString &m, bool isSendedByMe){
