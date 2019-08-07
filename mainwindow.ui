@@ -27,57 +27,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="IP">
-          <property name="whatsThis">
-           <string>Insert connection string here IP_ADDR:PORT/?id=</string>
-          </property>
-          <property name="accessibleName">
-           <string>Insert connection string here IP_ADDR:PORT/?id=</string>
-          </property>
-          <property name="accessibleDescription">
-           <string>Insert connection string here IP_ADDR:PORT/?id=</string>
-          </property>
-          <property name="inputMask">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string notr="true">192.168.1.102</string>
-          </property>
-          <property name="placeholderText">
-           <string notr="true">IP</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="Port">
-          <property name="text">
-           <string notr="true">3555</string>
-          </property>
-          <property name="maxLength">
-           <number>5</number>
-          </property>
-          <property name="placeholderText">
-           <string notr="true">PORT</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Connect string</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QHBoxLayout" name="horizontalLayout_2"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -132,6 +82,13 @@
          <widget class="QPushButton" name="Connect">
           <property name="text">
            <string>Connect</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="Disconnect">
+          <property name="text">
+           <string>Disconnect</string>
           </property>
          </widget>
         </item>
@@ -201,43 +158,6 @@
          <string>Compose message</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="Disconnect">
-          <property name="text">
-           <string>Disconnect</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
       </item>
      </layout>
     </item>

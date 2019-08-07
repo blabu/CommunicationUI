@@ -4,6 +4,7 @@
 
 void StringProtocolConnector::readHandler(const QByteArray b) {
     if(con != nullptr) { // уже настроена сессия
+        globalLog.addLog(Loger::L_TRACE, "Receive new data");
         emit received(QString(b));
     } else { // TODO Нужно предусмотреть передачу сессионного ключа сюда
         // первое сообщение будет потеряно
@@ -51,17 +52,44 @@ void StringProtocolConnector::registered(const Credentials &cr) {
 }
 
 void StringProtocolConnector::connect(const Credentials &cr) {
-
+    if(this->cr.id != cr.id) {
+        globalLog.addLog(Loger::L_WARNING, "Incorrect id ", cr.id.toStdString(), " but wait " + this->cr.id.toStdString());
+    }
+    this->cr.sessionKey = cr.sessionKey;
+    this->cr.identifierTo = cr.identifierTo;
+    if(proto == nullptr || proto.get() == nullptr) {
+        globalLog.addLog(Loger::L_ERROR, "Protocol is null");
+        emit disconnectedRemoteSignal();
+        return;
+    }
+    globalLog.addLog(Loger::L_TRACE, "Try connect from " + cr.id.toStdString(), " to " + cr.identifierTo.toStdString());
+    connectCallBackConnection = QObject::connect(proto.get(), &Protocol::connectToOK, [this]() {
+        QObject::disconnect(this->connectCallBackConnection);
+        globalLog.addLog(Loger::L_TRACE, "Connection ok handler");
+        con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
+        con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
+        emit this->connectOk();
+    });
+    proto->registerDisconnectEvent([this](){ QObject::disconnect(this->connectCallBackConnection); this->init(this->cr); });
+    proto->connectTo(cr.identifierTo);
 }
 
 void StringProtocolConnector::write(const QString &message) {
-
+    if(con == nullptr || con.get() == nullptr) {
+        globalLog.addLog(Loger::L_ERROR, "Can not send message ", message.toStdString(), " connection is null");
+        return;
+    }
+    con->write(message.toUtf8());
 }
 
 void StringProtocolConnector::close() {
     globalLog.addLog(Loger::L_TRACE, "StringProtocolConnector::close");
-    con = nullptr;
-    if(proto != nullptr) proto->disconnect();
     QObject::disconnect(this->initCallBackConnection);
     QObject::disconnect(this->regCallBackConnection);
+    QObject::disconnect(this->connectCallBackConnection);
+    con = nullptr;
+    if(proto != nullptr) {
+        proto->disconnect();
+    }
+    this->init(cr);
 }

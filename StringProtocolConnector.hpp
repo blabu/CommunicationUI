@@ -15,6 +15,7 @@ private:
     Credentials cr;
     QMetaObject::Connection initCallBackConnection;
     QMetaObject::Connection regCallBackConnection;
+    QMetaObject::Connection connectCallBackConnection;
     void readHandler(const QByteArray b);
 public:
     explicit StringProtocolConnector(QObject *parent = nullptr);

@@ -9,7 +9,7 @@ const QString Protocol::registerOkMessage("$V1;0;%1;3;");      // local name
 const QString Protocol::initMessage("$V1;%1;0;5;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
 const QString Protocol::initOkMessage("$V1;0;%1;5;7###INIT OK"); // local name
 const QString Protocol::connectMessage("$V1;%1;%2;7;0###"); //local name, to name
-const QString Protocol::connectOkMessage("$V1;%1;%2;7;B###CONNECT OK"); // to name, local name
+const QString Protocol::connectOkMessage("$V1;%1;%2;7;a###CONNECT OK"); // to name, local name
 const QString Protocol::pingCMD("$V1;%1;0;2;0###"); // local name
 const QString Protocol::dataCMD("$V1;%1;%2;8;%3###"); //local name, to, message size
 
@@ -24,7 +24,7 @@ void Protocol::initHandler(const QByteArray b) {
         isConnected.store(false);
         emit initOK();
     } else {
-        globalLog.addLog(Loger::L_ERROR, "Incorrect message in init handler receive ", b.toStdString(), " but wait " + ok.toStdString());
+        globalLog.addLog(Loger::L_ERROR, "Incorrect message in initHandler receive " + b.toStdString(), " but wait " + ok.toStdString());
     }
 }
 
@@ -35,19 +35,20 @@ void Protocol::registerHandler(const QByteArray b) {
         isConnected.store(false);
         emit regOK();
     } else {
-        globalLog.addLog(Loger::L_ERROR, "Incorrect message in registerHandler handler ",b.toStdString());
+        globalLog.addLog(Loger::L_ERROR, "Incorrect message in registerHandler receive " + b.toStdString(), " but wait " + ok.toStdString());
     }
 }
 
 void Protocol::connectHandler(const QByteArray b) {
-    QByteArray ok(registerOkMessage.arg(name).toUtf8());
+    QByteArray ok(connectOkMessage.arg(name).arg(to).toUtf8());
     if(b.contains(ok)) {
         isConnected.store(true);
         con->read(readHandler);
         con->registerDisconnectEvent(disconnectHandler);
         emit connectToOK();
+    } else {
+        globalLog.addLog(Loger::L_ERROR, "Icorrect message in connectHandler receive " + b.toStdString(), " but wait " + ok.toStdString());
     }
-
 }
 
 Protocol::Protocol(const QString &name, const QString &ip, const QString &port, QObject *parent) : QObject(parent), ip(ip), port(port), name(name) {
@@ -117,9 +118,11 @@ void Protocol::write(const QByteArray& message) {
         if(isConnected.load() && con != nullptr && con.get() != nullptr){
             QByteArray res(dataCMD.arg(name).arg(to).arg(message.size(),0,16).toUtf8());
             res.append(message);
+            globalLog.addLog(Loger::L_TRACE, "Try write message from " + name.toStdString(), " to " + to.toStdString() );
             con->write(res);
         }else if(isOnline.load()) {
             if(!to.isEmpty()) {
+                globalLog.addLog(Loger::L_TRACE, "Try reconect to " + to.toStdString() );
                 connectTo(to);
             }
         } else {

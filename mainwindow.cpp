@@ -7,6 +7,16 @@
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
 
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow) {
+    ui->setupUi(this);
+    QObject::connect(ui->Connect, SIGNAL(pressed()), this, SLOT(connectButtonPressed()));
+    QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
+    QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
+    disconnect();
+}
+
 //Обработчик по нажатию кнопок
 void MainWindow::keyPressEvent(QKeyEvent *event){
     auto key = event->key();
@@ -25,7 +35,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 void MainWindow::connectButtonPressed() {
     cr.sessionKey = ui->password->text();
     cr.identifierTo = ui->Identifier->text();
-    if(!cr.sessionKey.isEmpty() && !cr.identifierTo.isEmpty()) emit tryConnect(cr);
+    if(!cr.sessionKey.isEmpty() && !cr.identifierTo.isEmpty()) {
+        globalLog.addLog(Loger::L_TRACE, "Try connect to the client ", cr.identifierTo.toStdString());
+        emit tryConnect(cr);
+    }
 }
 
 void MainWindow::showText(const QString &m, bool isSendedByMe){
@@ -43,15 +56,6 @@ void MainWindow::receiveText(const QString& message) {
     showText(message, false);
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow) {
-    ui->setupUi(this);
-    QObject::connect(ui->Connect, SIGNAL(pressed()), this, SLOT(connectButtonPressed()));
-    QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
-    QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
-    disconnect();
-}
 
 MainWindow::~MainWindow() {
     delete ui;

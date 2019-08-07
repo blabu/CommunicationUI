@@ -31,16 +31,18 @@ int main(int argc, char *argv[]) {
     QObject::connect(&protocol, SIGNAL(initOk()), &start, SLOT(enableMainWindow()));
     QObject::connect(&protocol, SIGNAL(registerOk()), &start, SLOT(enableMainWindow()));
 
+    // Connect
+    QObject::connect(&w, SIGNAL(tryConnect(const Credentials&)), &protocol, SLOT(connect(const Credentials&)));
+    QObject::connect(&protocol, SIGNAL(connectOk()), &w, SLOT(connectionFine()));
 
-//    QObject::connect(&w, SIGNAL(TryConnect(const Credentials&)), protocol, SLOT(connect(const Credentials&)));
-//    QObject::connect(&w, SIGNAL(TryInit(const Credentials&)), protocol, SLOT(init(const Credentials&)));
-//    QObject::connect(protocol, SIGNAL(initOk()), &w, SLOT(initFine()));
-//    QObject::connect(protocol, SIGNAL(connectOk()), &w, SLOT(connectionFine()));
-//    QObject::connect(&w, SIGNAL(sendTextMessages(QString)), protocol, SLOT(sendTo(const QString&)));
-//    QObject::connect(protocol, SIGNAL(received(QString)), &w, SLOT(newTextMessageReceived(const QString&)));
-//    QObject::connect(&w, SIGNAL(pressedDisconnect()), protocol, SLOT(close()));
-//    QObject::connect(protocol, SIGNAL(disconnectedRemoteSignal()), &w, SLOT(disconnect()));
-//    //w.show();
+    //Read write
+    QObject::connect(&w, SIGNAL(sendText(QString)), &protocol, SLOT(write(const QString&)));
+    QObject::connect(&protocol, SIGNAL(received(QString)), &w, SLOT(receiveText(const QString&)));
+
+    // Disconnect
+    QObject::connect(&w, SIGNAL(pressedDisconnect()), &protocol, SLOT(close()));
+    QObject::connect(&protocol, SIGNAL(disconnectedRemoteSignal()), &w, SLOT(disconnect()));
+
     ui.exec();
     Loger::snapShotLong();
     return 0;
