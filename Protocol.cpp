@@ -7,9 +7,9 @@
 const QString Protocol::registerMessage("$V1;%1;0;3;%2###%3"); // local name, message size, BASE64((SHA256(name + password))
 const QString Protocol::registerOkMessage("$V1;0;%1;3;");      // local name
 const QString Protocol::initMessage("$V1;%1;0;5;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
-const QString Protocol::initOkMessage("$V1;0;%1;5;8###INIT OK;"); // local name
+const QString Protocol::initOkMessage("$V1;0;%1;5;7###INIT OK"); // local name
 const QString Protocol::connectMessage("$V1;%1;%2;7;0###"); //local name, to name
-const QString Protocol::connectOkMessage("$V1;%1;%2;7;B###CONNECT OK;"); // to name, local name
+const QString Protocol::connectOkMessage("$V1;%1;%2;7;B###CONNECT OK"); // to name, local name
 const QString Protocol::pingCMD("$V1;%1;0;2;0###"); // local name
 const QString Protocol::dataCMD("$V1;%1;%2;8;%3###"); //local name, to, message size
 
@@ -24,7 +24,7 @@ void Protocol::initHandler(const QByteArray b) {
         isConnected.store(false);
         emit initOK();
     } else {
-        globalLog.addLog(Loger::L_ERROR, "Incorrect message in init handler ",b.toStdString());
+        globalLog.addLog(Loger::L_ERROR, "Incorrect message in init handler receive ", b.toStdString(), " but wait " + ok.toStdString());
     }
 }
 
@@ -63,8 +63,10 @@ void Protocol::init(const QString &pass) {
         con->registerDisconnectEvent(disconnectHandler);
         const std::string salt(Botan::base64_encode(Botan::system_rng().random_vec(10)));
         const std::string signature(Botan::base64_encode(Botan::SHA_256().process(name.toStdString() + salt + passwordHash(pass))));
+        globalLog.addLog(Loger::L_TRACE, "SALT: " + salt, " SIGNATURE " + signature);
         const QString initArg(QString::fromStdString(salt + ";" + signature));
-        QByteArray res((initMessage.arg(name).arg(initArg.size()).arg(initArg)).toUtf8());
+        QByteArray res((initMessage.arg(name).arg(initArg.size(), 0, 16).arg(initArg)).toUtf8());
+        globalLog.addLog(Loger::L_TRACE, "Resalt message for init ", res.toStdString());
         con->read(std::bind(&Protocol::initHandler, this, std::placeholders::_1));
         con->write(res);
     } else {
@@ -80,7 +82,7 @@ void Protocol::reg(const QString &pass) {
     if(con != nullptr && con.get() != nullptr) {
         con->registerDisconnectEvent(disconnectHandler);
         const QString registerArg = QString::fromStdString(passwordHash(pass));
-        QByteArray res((registerMessage.arg(name).arg(registerArg.size()).arg(registerArg)).toUtf8());
+        QByteArray res((registerMessage.arg(name).arg(registerArg.size(), 0, 16).arg(registerArg)).toUtf8());
         con->read(std::bind(&Protocol::registerHandler, this, std::placeholders::_1));
         con->write(res);
     } else {
@@ -113,7 +115,7 @@ void Protocol::write(const QByteArray& message) {
     globalLog.addLog(Loger::L_TRACE, "Set read callback in Protocol");
     if(con != nullptr && con.get() != nullptr) { // Если соединение существует
         if(isConnected.load() && con != nullptr && con.get() != nullptr){
-            QByteArray res(dataCMD.arg(name).arg(to).arg(message.size(),64,16).toUtf8());
+            QByteArray res(dataCMD.arg(name).arg(to).arg(message.size(),0,16).toUtf8());
             res.append(message);
             con->write(res);
         }else if(isOnline.load()) {
