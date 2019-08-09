@@ -6,12 +6,12 @@
 
 const QString Protocol::registerMessage("$V1;%1;0;3;%2###%3"); // local name, message size, BASE64((SHA256(name + password))
 const QString Protocol::registerOkMessage("$V1;0;%1;3;");      // local name
-const QString Protocol::initMessage("$V1;%1;0;5;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
-const QString Protocol::initOkMessage("$V1;0;%1;5;7###INIT OK"); // local name
-const QString Protocol::connectMessage("$V1;%1;%2;7;0###"); //local name, to name
-const QString Protocol::connectOkMessage("$V1;%1;%2;7;a###CONNECT OK"); // to name, local name
+const QString Protocol::initMessage("$V1;%1;0;6;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
+const QString Protocol::initOkMessage("$V1;0;%1;6;7###INIT OK"); // local name
+const QString Protocol::connectMessage("$V1;%1;%2;8;0###"); //local name, to name
+const QString Protocol::connectOkMessage("$V1;%1;%2;8;a###CONNECT OK"); // to name, local name
 const QString Protocol::pingCMD("$V1;%1;0;2;0###"); // local name
-const QString Protocol::dataCMD("$V1;%1;%2;8;%3###"); //local name, to, message size
+const QString Protocol::dataCMD("$V1;%1;%2;9;%3###"); //local name, to, message size
 
 const std::string Protocol::passwordHash(QString pass) const {
     return Botan::base64_encode(Botan::SHA_256().process(name.toStdString() + pass.toStdString()));
@@ -40,7 +40,7 @@ void Protocol::registerHandler(const QByteArray b) {
 }
 
 void Protocol::connectHandler(const QByteArray b) {
-    QByteArray ok(connectOkMessage.arg(name).arg(to).toUtf8());
+    QByteArray ok(connectOkMessage.arg(to).arg(name).toUtf8());
     if(b.contains(ok)) {
         isConnected.store(true);
         con->read(readHandler);
@@ -115,19 +115,10 @@ void Protocol::disconnect(){
 void Protocol::write(const QByteArray& message) {
     globalLog.addLog(Loger::L_TRACE, "Set read callback in Protocol");
     if(con != nullptr && con.get() != nullptr) { // Если соединение существует
-        if(isConnected.load() && con != nullptr && con.get() != nullptr){
-            QByteArray res(dataCMD.arg(name).arg(to).arg(message.size(),0,16).toUtf8());
-            res.append(message);
-            globalLog.addLog(Loger::L_TRACE, "Try write message from " + name.toStdString(), " to " + to.toStdString() );
-            con->write(res);
-        }else if(isOnline.load()) {
-            if(!to.isEmpty()) {
-                globalLog.addLog(Loger::L_TRACE, "Try reconect to " + to.toStdString() );
-                connectTo(to);
-            }
-        } else {
-            globalLog.addLog(Loger::L_WARNING, "Disconnected from remote host");
-        }
+        QByteArray res(dataCMD.arg(name).arg(to).arg(message.size(),0,16).toUtf8());
+        res.append(message);
+        globalLog.addLog(Loger::L_TRACE, "Try write message from " + name.toStdString(), " to " + to.toStdString() );
+        con->write(res);
     } else {
         globalLog.addLog(Loger::L_ERROR, "Connection is null in Protocol::write");
     }
@@ -144,13 +135,14 @@ void Protocol::read(std::function<void (const QByteArray)> handler) {
             QString to = args.at(2);
             QString cmd = args.at(3);
             QString size = args.at(4);
-            if(from != this->to) {
-                globalLog.addLog(Loger::L_ERROR, " Saved to and received from not equal ", this->to.toStdString(), from.toStdString());
+            if(name != to) {
+                globalLog.addLog(Loger::L_WARNING, " Saved name " + this->name.toStdString(), " and received to not equal " + to.toStdString());
             }
+            this->to=from;
             size.toULong(Q_NULLPTR,16);
             cmd.toULong(Q_NULLPTR,16);
-            if( cmd != 8) {
-                globalLog.addLog(Loger::L_ERROR, " Command incorrect 8 != ", cmd.toStdString());
+            if( cmd != 9) {
+                globalLog.addLog(Loger::L_ERROR, " Command incorrect 9 != ", cmd.toStdString());
             }
             if(handler != nullptr) handler(buff.mid(headerEndPos+3));
         } else {

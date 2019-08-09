@@ -32,7 +32,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QLineEdit" name="password">
+         <widget class="QLineEdit" name="sessionKey">
           <property name="echoMode">
            <enum>QLineEdit::Password</enum>
           </property>
@@ -160,6 +160,16 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QRadioButton" name="indicator">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Offline</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

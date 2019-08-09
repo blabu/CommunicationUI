@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->Connect, SIGNAL(pressed()), this, SLOT(connectButtonPressed()));
     QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
     QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
+    QObject::connect(ui->sessionKey, &QLineEdit::textChanged, [this](const QString& str) {emit sessionKeyChanged(str); } );
     disconnect();
 }
 
@@ -33,7 +34,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 }
 
 void MainWindow::connectButtonPressed() {
-    cr.sessionKey = ui->password->text();
+    cr.sessionKey = ui->sessionKey->text();
     cr.identifierTo = ui->Identifier->text();
     if(!cr.sessionKey.isEmpty() && !cr.identifierTo.isEmpty()) {
         globalLog.addLog(Loger::L_TRACE, "Try connect to the client ", cr.identifierTo.toStdString());
@@ -62,21 +63,30 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::disconnect() {
-    ui->password->setReadOnly(false);
+    ui->sessionKey->setReadOnly(false);
     ui->Identifier->setReadOnly(false);
     ui->transmitMsg->setReadOnly(true);
     ui->Connect->setEnabled(true);
     ui->Disconnect->setEnabled(false);
     isConnected.store(false);
     globalLog.addLog(Loger::L_INFO, "Ui Disconnect slot");
+    ui->indicator->setText("Ofline");
+    ui->indicator->setDown(false);
 }
 
 void MainWindow::connectionFine() {
-    ui->password->setReadOnly(true);
+    ui->sessionKey->setReadOnly(true);
     ui->Identifier->setReadOnly(true);
     ui->transmitMsg->setReadOnly(false);
     ui->Connect->setEnabled(false);
     ui->Disconnect->setEnabled(true);
     isConnected.store(true);
+    ui->indicator->setText("Online by " + ui->Identifier->text());
+    ui->indicator->setDown(true);
     globalLog.addLog(Loger::L_INFO, "Connection fine!!!!");
+}
+
+void MainWindow::connectBy(const QString& userName) {
+    ui->Identifier->setText(userName);
+    connectionFine();
 }

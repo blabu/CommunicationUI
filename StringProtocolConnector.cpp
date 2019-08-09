@@ -4,17 +4,23 @@
 
 void StringProtocolConnector::readHandler(const QByteArray b) {
     if(con != nullptr) { // уже настроена сессия
-        globalLog.addLog(Loger::L_TRACE, "Receive new data");
+        globalLog.addLog(Loger::L_TRACE, "Receive new data ", b.toStdString());
         emit received(QString(b));
     } else { // TODO Нужно предусмотреть передачу сессионного ключа сюда
         // первое сообщение будет потеряно
-        globalLog.addLog(Loger::L_TRACE, "Start session by remote user");
+        globalLog.addLog(Loger::L_TRACE, "Start session by remote user with session key ", cr.sessionKey.toStdString());
+        emit connectBy(proto->getTo());
         con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
         con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
     }
 }
 
 StringProtocolConnector::StringProtocolConnector(QObject *parent) : QObject(parent){
+}
+
+void StringProtocolConnector::setSessionKey(const QString &key) {
+    globalLog.addLog(Loger::L_TRACE, "Session key was changed to ", key.toStdString());
+    cr.sessionKey = key;
 }
 
 void StringProtocolConnector::init(const Credentials &cr) {

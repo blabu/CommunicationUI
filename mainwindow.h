@@ -27,10 +27,12 @@ signals:
     void tryConnect(const Credentials& ctx);
     void pressedDisconnect();
     void sendText(QString msg);
+    void sessionKeyChanged(const QString&);
 public slots:
     void receiveText(const QString& message);
     void disconnect();
     void connectionFine();
+    void connectBy(const QString &userName);
 private:
     Ui::MainWindow *ui;
     QMutex uiMtx;

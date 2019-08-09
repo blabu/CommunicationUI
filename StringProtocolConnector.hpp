@@ -24,11 +24,13 @@ signals:
     void initOk();
     void registerOk();
     void connectOk();
+    void connectBy(const QString& user);
     void registerFail();
     void initFail();
     void disconnectedRemoteSignal();
     void received(QString m);
 public slots:
+    void setSessionKey(const QString& key);
     void init(const Credentials& cr);
     void registered(const Credentials& cr);
     void connect(const Credentials& cr);

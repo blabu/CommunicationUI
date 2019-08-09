@@ -72,6 +72,7 @@ public:
     void reg(const QString& pass);
     void connectTo(const QString& who);
     void disconnect();
+    QString getTo() {return to;}
 signals:
     void regOK();
     void initOK();
