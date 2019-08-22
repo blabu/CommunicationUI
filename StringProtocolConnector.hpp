@@ -36,6 +36,7 @@ public slots:
     void connect(const Credentials& cr);
     void write(const QString& message);
     void close();
+    void sendEverybody() {proto->setTo("0");}
 };
 
 #endif // PROTOCOLBASE_HPP

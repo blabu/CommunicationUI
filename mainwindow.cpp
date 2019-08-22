@@ -15,7 +15,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
     QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
     QObject::connect(ui->sessionKey, &QLineEdit::textChanged, [this](const QString& str) {emit sessionKeyChanged(str); } );
+    QObject::connect(ui->sendEverybody, &QPushButton::pressed, [this]() {emit sendEverybody(); this->sendLastText(); } );
     disconnect();
+}
+
+void MainWindow::sendLastText() {
+    auto text = ui->transmitMsg->text();
+    showText(text, true);
+    emit sendText(text);
 }
 
 //Обработчик по нажатию кнопок
@@ -24,9 +31,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     globalLog.addLog(Loger::L_INFO, "Button ", std::to_string(key), " is pressed");
     if(key == Qt::Key::Key_Enter || key == Qt::Key::Key_Return) {
         if(isConnected.load()) {
-            auto text = ui->transmitMsg->text();
-            showText(text, true);
-            emit sendText(text);
+            sendLastText();
         } else {
             connectButtonPressed();
         }
@@ -36,7 +41,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 void MainWindow::connectButtonPressed() {
     cr.sessionKey = ui->sessionKey->text();
     cr.identifierTo = ui->Identifier->text();
-    if(!cr.sessionKey.isEmpty() && !cr.identifierTo.isEmpty()) {
+    if(!cr.identifierTo.isEmpty()) {
         globalLog.addLog(Loger::L_TRACE, "Try connect to the client ", cr.identifierTo.toStdString());
         emit tryConnect(cr);
     }

@@ -27,11 +27,17 @@ void cryptMessages::write(const QByteArray & m) {
     enc->start_msg(nonce,enc->default_nonce_length());
     QByteArray b(m);
     Botan::secure_vector<uint8_t> res(b.data(), b.data() + b.size());
-    enc->finish(res);
-    globalLog.addLog(Loger::L_TRACE, "Send encrypted message ", Botan::hex_encode(res));
-    std::string codedResult = Botan::base64_encode(res);
-    codedResult.push_back('\n');
-    delegate->write(QByteArray(codedResult.data(), (unsigned int)codedResult.size()));
+    try {
+        enc->finish(res);
+        globalLog.addLog(Loger::L_TRACE, "Send encrypted message ", Botan::hex_encode(res));
+        std::string codedResult = Botan::base64_encode(res);
+        codedResult.push_back('\n');
+        delegate->write(QByteArray(codedResult.data(), (unsigned int)codedResult.size()));
+    }
+    catch(Botan::Decoding_Error err) {
+        QByteArray result(err.what());
+        delegate->write("Error when try write crypt message");
+    }
 }
 
 void cryptMessages::read(std::function<void (const QByteArray)> handler) {

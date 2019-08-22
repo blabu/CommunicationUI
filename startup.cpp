@@ -19,6 +19,15 @@ StartUp::~StartUp() {
     delete ui;
 }
 
+void StartUp::keyPressEvent(QKeyEvent *event){
+    auto key = event->key();
+    globalLog.addLog(Loger::L_INFO, "Button ", std::to_string(key), " is pressed");
+    if(key == Qt::Key::Key_Enter || key == Qt::Key::Key_Return) {
+        emit ui->loginBtn->pressed();
+    }
+}
+
+
 void StartUp::enableMainWindow() {
     this->hide();
     window->setUserID(ctx.id, ctx.password);
@@ -35,6 +44,7 @@ void StartUp::disableMainWindow() {
     ui->registerBtn->setEnabled(true);
     ui->pass->clear();
     ui->pass->setStyleSheet("border: 1px solid red");
+    ui->pass->setFocus();
     this->show();
 }
 

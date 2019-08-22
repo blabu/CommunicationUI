@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     // Set session key
     QObject::connect(&w, SIGNAL(sessionKeyChanged(const QString&)), &protocol, SLOT(setSessionKey(const QString&)));
     QObject::connect(&protocol, SIGNAL(connectBy(const QString&)), &w, SLOT(connectBy(const QString&)));
+    QObject::connect(&w, SIGNAL(sendEverybody()), &protocol, SLOT(sendEverybody()));
     ui.exec();
     Loger::snapShotLong();
     return 0;

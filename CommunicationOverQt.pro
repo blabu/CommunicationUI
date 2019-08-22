@@ -18,6 +18,7 @@ SOURCES += main.cpp\
     Protocol.cpp \
     ReadWriteTcp.cpp \
     StringProtocolConnector.cpp \
+    base64Messages.cpp \
     cryptmessages.cpp \
     mainwindow.cpp \
     Logger/FileLoger.cpp \
@@ -35,6 +36,7 @@ HEADERS  += mainwindow.h \
     Protocol.h \
     ReadWriteTcp.hpp \
     StringProtocolConnector.hpp \
+    base64Messages.hpp \
     credentials.hpp \
     cryptMessages.hpp \
     middlewareInterface.hpp \

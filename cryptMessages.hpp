@@ -18,7 +18,7 @@ class cryptMessages : public middlewareInterface {
 public:
     cryptMessages(std::string pass, std::shared_ptr<middlewareInterface> d);
     virtual ~cryptMessages() = default;
-    virtual void write(const QByteArray&);
+    virtual void write(const QByteArray&m);
     virtual void read(std::function<void(const QByteArray)> handler);
     virtual void registerDisconnectEvent(std::function<void(void)> handler);
 };

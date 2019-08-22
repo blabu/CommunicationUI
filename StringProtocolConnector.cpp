@@ -1,5 +1,6 @@
 #include "StringProtocolConnector.hpp"
 #include "cryptMessages.hpp"
+#include "base64Messages.hpp"
 #include <binders.h>
 
 void StringProtocolConnector::readHandler(const QByteArray b) {
@@ -10,7 +11,11 @@ void StringProtocolConnector::readHandler(const QByteArray b) {
         // первое сообщение будет потеряно
         globalLog.addLog(Loger::L_TRACE, "Start session by remote user with session key ", cr.sessionKey.toStdString());
         emit connectBy(proto->getTo());
-        con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
+        if(!cr.sessionKey.isEmpty()) {
+            con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
+        } else {
+            con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
+        }
         con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
     }
 }
@@ -72,8 +77,10 @@ void StringProtocolConnector::connect(const Credentials &cr) {
     connectCallBackConnection = QObject::connect(proto.get(), &Protocol::connectToOK, [this]() {
         QObject::disconnect(this->connectCallBackConnection);
         globalLog.addLog(Loger::L_TRACE, "Connection ok handler");
-        con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
+        if(!this->cr.sessionKey.isEmpty()) con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
+        else con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
         con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
+        //con->write(QString("Test connection message").toUtf8());
         emit this->connectOk();
     });
     proto->registerDisconnectEvent([this](){ QObject::disconnect(this->connectCallBackConnection); this->init(this->cr); });

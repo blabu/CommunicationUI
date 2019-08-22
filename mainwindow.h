@@ -28,6 +28,7 @@ signals:
     void pressedDisconnect();
     void sendText(QString msg);
     void sessionKeyChanged(const QString&);
+    void sendEverybody();
 public slots:
     void receiveText(const QString& message);
     void disconnect();
@@ -38,6 +39,7 @@ private:
     QMutex uiMtx;
     Credentials cr;
     std::atomic<bool> isConnected;
+    void sendLastText();
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
 };

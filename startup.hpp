@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <mainwindow.h>
+#include <QKeyEvent>
 
 namespace Ui {
 class StartUp;
@@ -28,6 +29,8 @@ private:
 private slots:
     void init();
     void reg();
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // STARTUP_HPP
