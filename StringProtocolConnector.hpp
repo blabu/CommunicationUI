@@ -35,6 +35,8 @@ public slots:
     void registered(const Credentials& cr);
     void connect(const Credentials& cr);
     void write(const QString& message);
+    void destroyConnection();
+    void sendProp(ModemProperties m);
     void close();
     void sendEverybody() {proto->setTo("0");}
 };

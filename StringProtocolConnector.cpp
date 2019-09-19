@@ -95,14 +95,44 @@ void StringProtocolConnector::write(const QString &message) {
     con->write(message.toUtf8());
 }
 
+void StringProtocolConnector::destroyConnection() {
+    globalLog.addLog(Loger::L_TRACE, "StringProtocolConnector::destroyConnection");
+    if(proto != nullptr) {
+        proto->destroyConnection();
+    }
+}
+
+void StringProtocolConnector::sendProp(ModemProperties m) {
+    globalLog.addLog(Loger::L_TRACE, "StringProtocolConnector::sendProp");
+    bool ok = false;
+    m.baudrate.toUInt(&ok,10);
+    if(m.baudrate.size() > 0 && !ok) {
+       globalLog.addLog(Loger::L_ERROR, "Baudrate not correct", m.baudrate.toStdString());
+       return;
+    }
+    m.modemTimeout.toUInt(&ok,10);
+    if(m.modemTimeout.size() > 0 && !ok) {
+       globalLog.addLog(Loger::L_ERROR, "Modem timeout not correct", m.modemTimeout.toStdString());
+       return;
+    }
+    m.rs232Timeout.toUInt(&ok,10);
+    if(m.rs232Timeout.size() > 0 && !ok) {
+        globalLog.addLog(Loger::L_ERROR, "RS232 timeout not correct", m.rs232Timeout.toStdString());
+        return;
+    }
+    if(proto != nullptr) {
+        globalLog.addLog(Loger::L_TRACE, "Try send properties ", m.baudrate.toStdString(), m.serverIP.toStdString());
+        proto->sendProperties(m);
+    } else {
+        globalLog.addLog(Loger::L_ERROR, "Protocol instance is null");
+    }
+}
+
 void StringProtocolConnector::close() {
     globalLog.addLog(Loger::L_TRACE, "StringProtocolConnector::close");
     QObject::disconnect(this->initCallBackConnection);
     QObject::disconnect(this->regCallBackConnection);
     QObject::disconnect(this->connectCallBackConnection);
     con = nullptr;
-    if(proto != nullptr) {
-        proto->disconnect();
-    }
     this->init(cr);
 }

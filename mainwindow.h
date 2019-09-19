@@ -18,6 +18,7 @@ class MainWindow : public QMainWindow
 private slots:
     void connectButtonPressed();
     void showText(const QString& m, bool isSendedByMe);
+    void sendPropSlot();
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -29,6 +30,7 @@ signals:
     void sendText(QString msg);
     void sessionKeyChanged(const QString&);
     void sendEverybody();
+    void sendPropSignal(ModemProperties m);
 public slots:
     void receiveText(const QString& message);
     void disconnect();

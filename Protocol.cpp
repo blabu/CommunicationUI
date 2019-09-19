@@ -12,6 +12,8 @@ const QString Protocol::connectMessage("$V1;%1;%2;8;0###"); //local name, to nam
 const QString Protocol::connectOkMessage("$V1;%1;%2;8;a###CONNECT OK"); // to name, local name
 const QString Protocol::pingCMD("$V1;%1;0;2;0###"); // local name
 const QString Protocol::dataCMD("$V1;%1;%2;9;%3###"); //local name, to, message size
+const QString Protocol::disconnectCMD("$V1;%1;%2;a;0###");
+const QString Protocol::propertiesCMD("$V1;%1;%2;b;%3###%4");
 
 const std::string Protocol::passwordHash(QString pass) const {
     return Botan::base64_encode(Botan::SHA_256().process(name.toStdString() + pass.toStdString()));
@@ -67,7 +69,7 @@ void Protocol::init(const QString &pass) {
         globalLog.addLog(Loger::L_TRACE, "SALT: " + salt, " SIGNATURE " + signature);
         const QString initArg(QString::fromStdString(salt + ";" + signature));
         QByteArray res((initMessage.arg(name).arg(initArg.size(), 0, 16).arg(initArg)).toUtf8());
-        globalLog.addLog(Loger::L_TRACE, "Resalt message for init ", res.toStdString());
+        globalLog.addLog(Loger::L_TRACE, "Result message for init ", res.toStdString());
         con->read(std::bind(&Protocol::initHandler, this, std::placeholders::_1));
         con->write(res);
     } else {
@@ -105,11 +107,25 @@ void Protocol::connectTo(const QString &who) {
     }
 }
 
-void Protocol::disconnect(){
+void Protocol::destroyConnection() {
     globalLog.addLog(Loger::L_TRACE, "Protocol::disconnect");
-    to.clear();
-    isOnline.store(false);
-    isConnected.store(false);
+    if(con != nullptr && isOnline.load() && isConnected.load()) {
+        QByteArray req(disconnectCMD.arg(name).arg(to).toUtf8());
+        if(con != nullptr) con->write(req);
+        isConnected.store(false);
+        to.clear();
+    }
+}
+
+void Protocol::sendProperties(const ModemProperties& prop) {
+    globalLog.addLog(Loger::L_TRACE, "Protocol::sendProperties");
+    if(con != nullptr && isOnline.load() && isConnected.load()) {
+        globalLog.addLog(Loger::L_TRACE, "Try send properties");
+        QString data(prop.baudrate+";"+prop.rs232Timeout+";"+prop.modemTimeout+";"+prop.serverIP);
+        globalLog.addLog(Loger::L_TRACE, "baudrate ", data.toStdString());
+        QByteArray req(propertiesCMD.arg(name).arg(to).arg(data.size(),0,16).arg(data).toUtf8());
+        con->write(req);
+    }
 }
 
 void Protocol::write(const QByteArray& message) {

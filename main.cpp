@@ -40,8 +40,11 @@ int main(int argc, char *argv[]) {
     QObject::connect(&protocol, SIGNAL(received(QString)), &w, SLOT(receiveText(const QString&)));
 
     // Disconnect
-    QObject::connect(&w, SIGNAL(pressedDisconnect()), &protocol, SLOT(close()));
+    QObject::connect(&w, SIGNAL(pressedDisconnect()), &protocol, SLOT(destroyConnection()));
     QObject::connect(&protocol, SIGNAL(disconnectedRemoteSignal()), &w, SLOT(disconnect()));
+
+    //Send properties
+    QObject::connect(&w, SIGNAL(sendPropSignal(ModemProperties)), &protocol, SLOT(sendProp(ModemProperties)));
 
     // Set session key
     QObject::connect(&w, SIGNAL(sessionKeyChanged(const QString&)), &protocol, SLOT(setSessionKey(const QString&)));

@@ -48,6 +48,8 @@ private:
     static const QString connectOkMessage;
     static const QString pingCMD;
     static const QString dataCMD;
+    static const QString disconnectCMD;
+    static const QString propertiesCMD;
     const QString ip;
     const QString port;
     const QString name;
@@ -71,7 +73,8 @@ public:
     void init(const QString& pass);
     void reg(const QString& pass);
     void connectTo(const QString& who);
-    void disconnect();
+    void destroyConnection();
+    void sendProperties(const ModemProperties& prop);
     QString getTo() {return to;}
     void setTo(const QString& to) {this->to = to;}
 signals:

@@ -12,4 +12,11 @@ struct Credentials {
     QString serverPort;
 };
 
+struct ModemProperties {
+    QString baudrate;
+    QString rs232Timeout;
+    QString modemTimeout;
+    QString serverIP;
+};
+
 #endif // CREDENTIALS_HPP

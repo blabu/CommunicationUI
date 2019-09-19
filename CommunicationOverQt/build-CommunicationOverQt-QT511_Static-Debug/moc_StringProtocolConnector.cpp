@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_StringProtocolConnector_t {
-    QByteArrayData data[23];
-    char stringdata0[217];
+    QByteArrayData data[26];
+    char stringdata0[260];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,8 +52,11 @@ QT_MOC_LITERAL(17, 164, 10), // "registered"
 QT_MOC_LITERAL(18, 175, 7), // "connect"
 QT_MOC_LITERAL(19, 183, 5), // "write"
 QT_MOC_LITERAL(20, 189, 7), // "message"
-QT_MOC_LITERAL(21, 197, 5), // "close"
-QT_MOC_LITERAL(22, 203, 13) // "sendEverybody"
+QT_MOC_LITERAL(21, 197, 17), // "destroyConnection"
+QT_MOC_LITERAL(22, 215, 8), // "sendProp"
+QT_MOC_LITERAL(23, 224, 15), // "ModemProperties"
+QT_MOC_LITERAL(24, 240, 5), // "close"
+QT_MOC_LITERAL(25, 246, 13) // "sendEverybody"
 
     },
     "StringProtocolConnector\0initOk\0\0"
@@ -61,7 +64,9 @@ QT_MOC_LITERAL(22, 203, 13) // "sendEverybody"
     "registerFail\0initFail\0disconnectedRemoteSignal\0"
     "received\0m\0setSessionKey\0key\0init\0"
     "Credentials\0cr\0registered\0connect\0"
-    "write\0message\0close\0sendEverybody"
+    "write\0message\0destroyConnection\0"
+    "sendProp\0ModemProperties\0close\0"
+    "sendEverybody"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,7 +76,7 @@ static const uint qt_meta_data_StringProtocolConnector[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -79,23 +84,25 @@ static const uint qt_meta_data_StringProtocolConnector[] = {
        8,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   89,    2, 0x06 /* Public */,
-       3,    0,   90,    2, 0x06 /* Public */,
-       4,    0,   91,    2, 0x06 /* Public */,
-       5,    1,   92,    2, 0x06 /* Public */,
-       7,    0,   95,    2, 0x06 /* Public */,
-       8,    0,   96,    2, 0x06 /* Public */,
-       9,    0,   97,    2, 0x06 /* Public */,
-      10,    1,   98,    2, 0x06 /* Public */,
+       1,    0,   99,    2, 0x06 /* Public */,
+       3,    0,  100,    2, 0x06 /* Public */,
+       4,    0,  101,    2, 0x06 /* Public */,
+       5,    1,  102,    2, 0x06 /* Public */,
+       7,    0,  105,    2, 0x06 /* Public */,
+       8,    0,  106,    2, 0x06 /* Public */,
+       9,    0,  107,    2, 0x06 /* Public */,
+      10,    1,  108,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      12,    1,  101,    2, 0x0a /* Public */,
-      14,    1,  104,    2, 0x0a /* Public */,
-      17,    1,  107,    2, 0x0a /* Public */,
-      18,    1,  110,    2, 0x0a /* Public */,
-      19,    1,  113,    2, 0x0a /* Public */,
-      21,    0,  116,    2, 0x0a /* Public */,
-      22,    0,  117,    2, 0x0a /* Public */,
+      12,    1,  111,    2, 0x0a /* Public */,
+      14,    1,  114,    2, 0x0a /* Public */,
+      17,    1,  117,    2, 0x0a /* Public */,
+      18,    1,  120,    2, 0x0a /* Public */,
+      19,    1,  123,    2, 0x0a /* Public */,
+      21,    0,  126,    2, 0x0a /* Public */,
+      22,    1,  127,    2, 0x0a /* Public */,
+      24,    0,  130,    2, 0x0a /* Public */,
+      25,    0,  131,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -113,6 +120,8 @@ static const uint qt_meta_data_StringProtocolConnector[] = {
     QMetaType::Void, 0x80000000 | 15,   16,
     QMetaType::Void, 0x80000000 | 15,   16,
     QMetaType::Void, QMetaType::QString,   20,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 23,   11,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -138,8 +147,10 @@ void StringProtocolConnector::qt_static_metacall(QObject *_o, QMetaObject::Call 
         case 10: _t->registered((*reinterpret_cast< const Credentials(*)>(_a[1]))); break;
         case 11: _t->connect((*reinterpret_cast< const Credentials(*)>(_a[1]))); break;
         case 12: _t->write((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 13: _t->close(); break;
-        case 14: _t->sendEverybody(); break;
+        case 13: _t->destroyConnection(); break;
+        case 14: _t->sendProp((*reinterpret_cast< ModemProperties(*)>(_a[1]))); break;
+        case 15: _t->close(); break;
+        case 16: _t->sendEverybody(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -228,13 +239,13 @@ int StringProtocolConnector::qt_metacall(QMetaObject::Call _c, int _id, void **_
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 17)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 15;
+        _id -= 17;
     }
     return _id;
 }
