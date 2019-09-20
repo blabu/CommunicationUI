@@ -12,6 +12,7 @@
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -41,6 +42,7 @@ public:
     QVBoxLayout *base;
     QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *horizontalLayout_3;
+    QCheckBox *base64;
     QLineEdit *sessionKey;
     QLabel *label_2;
     QHBoxLayout *horizontalLayout_4;
@@ -122,6 +124,11 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        base64 = new QCheckBox(centralWidget);
+        base64->setObjectName(QStringLiteral("base64"));
+
+        horizontalLayout_3->addWidget(base64);
+
         sessionKey = new QLineEdit(centralWidget);
         sessionKey->setObjectName(QStringLiteral("sessionKey"));
         sessionKey->setEchoMode(QLineEdit::Password);
@@ -289,6 +296,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         indicator->setText(QApplication::translate("MainWindow", "Offline", nullptr));
         sendEverybody->setText(QApplication::translate("MainWindow", "Publish for all", nullptr));
+        base64->setText(QApplication::translate("MainWindow", "Base64", nullptr));
         sessionKey->setPlaceholderText(QApplication::translate("MainWindow", "session password", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Credentials", nullptr));
         Identifier->setPlaceholderText(QApplication::translate("MainWindow", "Connect to identifier", nullptr));

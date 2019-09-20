@@ -14,7 +14,14 @@ void StringProtocolConnector::readHandler(const QByteArray b) {
         if(!cr.sessionKey.isEmpty()) {
             con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
         } else {
-            con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
+            if(cr.isBase64) {
+                globalLog.addLog(Loger::L_TRACE, "Base64 mode initialize in readHandler()");
+                con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
+            }
+            else {
+                globalLog.addLog(Loger::L_TRACE, "Transparent mode initialize in readHandler()");
+                con = proto;
+            }
         }
         con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
     }
@@ -68,6 +75,7 @@ void StringProtocolConnector::connect(const Credentials &cr) {
     }
     this->cr.sessionKey = cr.sessionKey;
     this->cr.identifierTo = cr.identifierTo;
+    this->cr.isBase64 = cr.isBase64;
     if(proto == nullptr || proto.get() == nullptr) {
         globalLog.addLog(Loger::L_ERROR, "Protocol is null");
         emit disconnectedRemoteSignal();
@@ -78,7 +86,13 @@ void StringProtocolConnector::connect(const Credentials &cr) {
         QObject::disconnect(this->connectCallBackConnection);
         globalLog.addLog(Loger::L_TRACE, "Connection ok handler");
         if(!this->cr.sessionKey.isEmpty()) con = std::shared_ptr<middlewareInterface>(new cryptMessages(this->cr.sessionKey.toStdString(), proto));
-        else con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
+        else if(this->cr.isBase64) {
+            globalLog.addLog(Loger::L_TRACE, "Base64 mode initialize in connect");
+            con = std::shared_ptr<middlewareInterface>(new base64Messages(proto));
+        } else {
+            globalLog.addLog(Loger::L_TRACE, "Transparent mode initialize in connect");
+            con = proto;
+        }
         con->read(std::bind(&StringProtocolConnector::readHandler, this, std::placeholders::_1));
         //con->write(QString("Test connection message").toUtf8());
         emit this->connectOk();

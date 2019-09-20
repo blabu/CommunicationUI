@@ -10,6 +10,7 @@ struct Credentials {
     QString identifierTo;
     QString serverAddr;
     QString serverPort;
+    bool isBase64;
 };
 
 struct ModemProperties {

@@ -79,6 +79,13 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
+         <widget class="QCheckBox" name="base64">
+          <property name="text">
+           <string>Base64</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLineEdit" name="sessionKey">
           <property name="echoMode">
            <enum>QLineEdit::Password</enum>

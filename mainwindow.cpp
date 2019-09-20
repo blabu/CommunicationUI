@@ -42,6 +42,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 void MainWindow::connectButtonPressed() {
     cr.sessionKey = ui->sessionKey->text();
     cr.identifierTo = ui->Identifier->text();
+    if(ui->base64->isChecked()) {
+        globalLog.addLog(Loger::L_TRACE, "Base64 mode enabled when connect button pressed");
+        cr.isBase64 = true;
+    } else {
+        globalLog.addLog(Loger::L_TRACE, "Transparent mode enabled when connect button pressed");
+        cr.isBase64 = false;
+    }
     if(!cr.identifierTo.isEmpty()) {
         globalLog.addLog(Loger::L_TRACE, "Try connect to the client ", cr.identifierTo.toStdString());
         emit tryConnect(cr);
