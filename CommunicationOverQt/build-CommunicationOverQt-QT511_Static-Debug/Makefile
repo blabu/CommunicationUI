@@ -60,12 +60,14 @@ SOURCES       = ../../main.cpp \
 		../../mainwindow.cpp \
 		../../Logger/FileLoger.cpp \
 		../../Logger/Loger.cpp \
+		../../sendProperties.cpp \
 		../../startup.cpp /home/blabu/MyProject/Cpp/CommunicationOverQt/CommunicationOverQt/build-CommunicationOverQt-QT511_Static-Debug/communicationoverqt_plugin_import.cpp \
 		moc_mainwindow.cpp \
 		moc_ConnectionFactory.cpp \
 		moc_Protocol.cpp \
 		moc_ReadWriteTcp.cpp \
 		moc_StringProtocolConnector.cpp \
+		moc_sendProperties.cpp \
 		moc_startup.cpp
 OBJECTS       = main.o \
 		ConnectionFactory.o \
@@ -77,6 +79,7 @@ OBJECTS       = main.o \
 		mainwindow.o \
 		FileLoger.o \
 		Loger.o \
+		sendProperties.o \
 		startup.o \
 		communicationoverqt_plugin_import.o \
 		moc_mainwindow.o \
@@ -84,6 +87,7 @@ OBJECTS       = main.o \
 		moc_Protocol.o \
 		moc_ReadWriteTcp.o \
 		moc_StringProtocolConnector.o \
+		moc_sendProperties.o \
 		moc_startup.o
 DIST          = /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_pre.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/common/unix.conf \
@@ -259,6 +263,7 @@ DIST          = /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_pre.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/qt_config.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/linux-g++/qmake.conf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/spec_post.prf \
+		../../.qmake.stash \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/exclusive_builds.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/toolchain.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/default_pre.prf \
@@ -294,6 +299,7 @@ DIST          = /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_pre.prf \
 		../../credentials.hpp \
 		../../cryptMessages.hpp \
 		../../middlewareInterface.hpp \
+		../../sendProperties.hpp \
 		../../startup.hpp ../../main.cpp \
 		../../ConnectionFactory.cpp \
 		../../Protocol.cpp \
@@ -304,6 +310,7 @@ DIST          = /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_pre.prf \
 		../../mainwindow.cpp \
 		../../Logger/FileLoger.cpp \
 		../../Logger/Loger.cpp \
+		../../sendProperties.cpp \
 		../../startup.cpp
 QMAKE_TARGET  = CommunicationOverQt
 DESTDIR       = 
@@ -313,7 +320,7 @@ TARGET        = CommunicationOverQt
 first: all
 ####### Build rules
 
-$(TARGET): /home/blabu/MyProject/Cpp/CommunicationOverQt/vendor/lib/libbotan-2.a /home/blabu/IDE/Qt/5.13/lib/libQt5Widgets.a /home/blabu/IDE/Qt/5.13/lib/libQt5Gui.a /home/blabu/IDE/Qt/5.13/lib/libQt5Network.a /home/blabu/IDE/Qt/5.13/lib/libQt5Core.a ui_mainwindow.h ui_Startup.h $(OBJECTS)  
+$(TARGET): /home/blabu/MyProject/Cpp/CommunicationOverQt/vendor/lib/libbotan-2.a /home/blabu/IDE/Qt/5.13/lib/libQt5Widgets.a /home/blabu/IDE/Qt/5.13/lib/libQt5Gui.a /home/blabu/IDE/Qt/5.13/lib/libQt5Network.a /home/blabu/IDE/Qt/5.13/lib/libQt5Core.a ui_mainwindow.h ui_Startup.h ui_sendproperties.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../../CommunicationOverQt.pro /home/blabu/IDE/Qt/5.13/mkspecs/linux-g++/qmake.conf /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_pre.prf \
@@ -490,6 +497,7 @@ Makefile: ../../CommunicationOverQt.pro /home/blabu/IDE/Qt/5.13/mkspecs/linux-g+
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/qt_config.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/linux-g++/qmake.conf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/exclusive_builds.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/toolchain.prf \
 		/home/blabu/IDE/Qt/5.13/mkspecs/features/default_pre.prf \
@@ -707,6 +715,7 @@ Makefile: ../../CommunicationOverQt.pro /home/blabu/IDE/Qt/5.13/mkspecs/linux-g+
 /home/blabu/IDE/Qt/5.13/mkspecs/features/qt_config.prf:
 /home/blabu/IDE/Qt/5.13/mkspecs/linux-g++/qmake.conf:
 /home/blabu/IDE/Qt/5.13/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/blabu/IDE/Qt/5.13/mkspecs/features/exclusive_builds.prf:
 /home/blabu/IDE/Qt/5.13/mkspecs/features/toolchain.prf:
 /home/blabu/IDE/Qt/5.13/mkspecs/features/default_pre.prf:
@@ -764,9 +773,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/blabu/IDE/Qt/5.13/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../mainwindow.h ../../ConnectionFactory.hpp ../../Logger/ILogerWriter.h ../../Logger/consoleLoger.h ../../Logger/FileLoger.hpp ../../Logger/Loger.hpp ../../Logger/StatusInterface.hpp ../../MainProjectLoger.hpp / ../../Protocol.h ../../ReadWriteTcp.hpp ../../StringProtocolConnector.hpp ../../base64Messages.hpp ../../credentials.hpp ../../cryptMessages.hpp ../../middlewareInterface.hpp ../../startup.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../main.cpp ../../ConnectionFactory.cpp ../../Protocol.cpp ../../ReadWriteTcp.cpp ../../StringProtocolConnector.cpp ../../base64Messages.cpp ../../cryptmessages.cpp ../../mainwindow.cpp ../../Logger/FileLoger.cpp ../../Logger/Loger.cpp ../../startup.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../mainwindow.ui ../../Startup.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../mainwindow.h ../../ConnectionFactory.hpp ../../Logger/ILogerWriter.h ../../Logger/consoleLoger.h ../../Logger/FileLoger.hpp ../../Logger/Loger.hpp ../../Logger/StatusInterface.hpp ../../MainProjectLoger.hpp / ../../Protocol.h ../../ReadWriteTcp.hpp ../../StringProtocolConnector.hpp ../../base64Messages.hpp ../../credentials.hpp ../../cryptMessages.hpp ../../middlewareInterface.hpp ../../sendProperties.hpp ../../startup.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../main.cpp ../../ConnectionFactory.cpp ../../Protocol.cpp ../../ReadWriteTcp.cpp ../../StringProtocolConnector.cpp ../../base64Messages.cpp ../../cryptmessages.cpp ../../mainwindow.cpp ../../Logger/FileLoger.cpp ../../Logger/Loger.cpp ../../sendProperties.cpp ../../startup.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../mainwindow.ui ../../Startup.ui ../../sendproperties.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -798,9 +807,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/blabu/IDE/Qt/5.13/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -D_REENTRANT -Wall -W -dM -E -o moc_predefs.h /home/blabu/IDE/Qt/5.13/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_ConnectionFactory.cpp moc_Protocol.cpp moc_ReadWriteTcp.cpp moc_StringProtocolConnector.cpp moc_startup.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_ConnectionFactory.cpp moc_Protocol.cpp moc_ReadWriteTcp.cpp moc_StringProtocolConnector.cpp moc_sendProperties.cpp moc_startup.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_ConnectionFactory.cpp moc_Protocol.cpp moc_ReadWriteTcp.cpp moc_StringProtocolConnector.cpp moc_startup.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_ConnectionFactory.cpp moc_Protocol.cpp moc_ReadWriteTcp.cpp moc_StringProtocolConnector.cpp moc_sendProperties.cpp moc_startup.cpp
 moc_mainwindow.cpp: /home/blabu/IDE/Qt/5.13/include/QtWidgets/QMainWindow \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qmainwindow.h \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgetsglobal.h \
@@ -911,6 +920,8 @@ moc_mainwindow.cpp: /home/blabu/IDE/Qt/5.13/include/QtWidgets/QMainWindow \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QMutex \
 		../../credentials.hpp \
+		../../sendProperties.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		../../mainwindow.h \
 		moc_predefs.h \
 		/home/blabu/IDE/Qt/5.13/bin/moc
@@ -1218,6 +1229,116 @@ moc_StringProtocolConnector.cpp: /home/blabu/IDE/Qt/5.13/include/QtCore/QObject 
 		/home/blabu/IDE/Qt/5.13/bin/moc
 	/home/blabu/IDE/Qt/5.13/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/blabu/IDE/Qt/5.13/mkspecs/linux-g++ -I/home/blabu/MyProject/Cpp/CommunicationOverQt -I/home/blabu/MyProject/Cpp/CommunicationOverQt/vendor/inc -I/home/blabu/IDE/Qt/5.13/include -I/home/blabu/IDE/Qt/5.13/include/QtWidgets -I/home/blabu/IDE/Qt/5.13/include/QtGui -I/home/blabu/IDE/Qt/5.13/include/QtNetwork -I/home/blabu/IDE/Qt/5.13/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../../StringProtocolConnector.hpp -o moc_StringProtocolConnector.cpp
 
+moc_sendProperties.cpp: /home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qwidget.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgetsglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtguiglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qconfig-bootstrapped.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qconfig.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtcore-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsystemdetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qprocessordetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcompilerdetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtypeinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsysinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlogging.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qflags.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbasicatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_bootstrap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qgenericatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_cxx11.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_msvc.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qglobalstatic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmutex.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qnumeric.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qversiontagging.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtgui-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgets-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qwindowdefs.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobjectdefs.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qnamespace.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobjectdefs_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qwindowdefs_win.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobject.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstring.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qchar.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbytearray.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qrefcount.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qarraydata.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringliteral.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringalgorithms.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringview.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringbuilder.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qalgorithms.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qiterator.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qhashfunctions.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qpair.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbytearraylist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringlist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qregexp.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringmatcher.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcoreevent.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qscopedpointer.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmetatype.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvarlengtharray.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcontainerfwd.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobject_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmargins.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpaintdevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qrect.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsize.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qpoint.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpalette.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qcolor.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qrgb.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qrgba64.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qbrush.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvector.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qmatrix.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpolygon.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qregion.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qdatastream.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qiodevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qline.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtransform.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpainterpath.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qimage.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpixelformat.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpixmap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsharedpointer.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qshareddata.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qhash.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsharedpointer_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfont.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfontmetrics.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfontinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qsizepolicy.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qcursor.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qkeysequence.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qevent.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvariant.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qdebug.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtextstream.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlocale.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qset.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcontiguouscache.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qurl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qurlquery.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qfile.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qfiledevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qvector2d.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtouchdevice.h \
+		../../credentials.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/QString \
+		../../sendProperties.hpp \
+		moc_predefs.h \
+		/home/blabu/IDE/Qt/5.13/bin/moc
+	/home/blabu/IDE/Qt/5.13/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/blabu/IDE/Qt/5.13/mkspecs/linux-g++ -I/home/blabu/MyProject/Cpp/CommunicationOverQt -I/home/blabu/MyProject/Cpp/CommunicationOverQt/vendor/inc -I/home/blabu/IDE/Qt/5.13/include -I/home/blabu/IDE/Qt/5.13/include/QtWidgets -I/home/blabu/IDE/Qt/5.13/include/QtGui -I/home/blabu/IDE/Qt/5.13/include/QtNetwork -I/home/blabu/IDE/Qt/5.13/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../../sendProperties.hpp -o moc_sendProperties.cpp
+
 moc_startup.cpp: /home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qwidget.h \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgetsglobal.h \
@@ -1330,6 +1451,7 @@ moc_startup.cpp: /home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QMutex \
 		../../credentials.hpp \
+		../../sendProperties.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/QKeyEvent \
 		../../startup.hpp \
 		moc_predefs.h \
@@ -1340,9 +1462,9 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_Startup.h
+compiler_uic_make_all: ui_mainwindow.h ui_Startup.h ui_sendproperties.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_Startup.h
+	-$(DEL_FILE) ui_mainwindow.h ui_Startup.h ui_sendproperties.h
 ui_mainwindow.h: ../../mainwindow.ui \
 		/home/blabu/IDE/Qt/5.13/bin/uic
 	/home/blabu/IDE/Qt/5.13/bin/uic ../../mainwindow.ui -o ui_mainwindow.h
@@ -1350,6 +1472,10 @@ ui_mainwindow.h: ../../mainwindow.ui \
 ui_Startup.h: ../../Startup.ui \
 		/home/blabu/IDE/Qt/5.13/bin/uic
 	/home/blabu/IDE/Qt/5.13/bin/uic ../../Startup.ui -o ui_Startup.h
+
+ui_sendproperties.h: ../../sendproperties.ui \
+		/home/blabu/IDE/Qt/5.13/bin/uic
+	/home/blabu/IDE/Qt/5.13/bin/uic ../../sendproperties.ui -o ui_sendproperties.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -1477,6 +1603,8 @@ main.o: ../../main.cpp ../../MainProjectLoger.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QMutex \
 		../../credentials.hpp \
+		../../sendProperties.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QApplication \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qapplication.h \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/qcoreapplication.h \
@@ -1495,7 +1623,6 @@ main.o: ../../main.cpp ../../MainProjectLoger.hpp \
 		../../middlewareInterface.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QByteArray \
 		../../startup.hpp \
-		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/QKeyEvent
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
@@ -2066,25 +2193,63 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QMutex \
 		../../credentials.hpp \
+		../../sendProperties.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
 		../../MainProjectLoger.hpp \
 		../../Logger/Loger.hpp \
 		../../Logger/ILogerWriter.h \
 		../../Logger/FileLoger.hpp \
 		../../Logger/StatusInterface.hpp \
 		ui_mainwindow.h \
-		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QPushButton \
-		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qpushbutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/QLocale \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/QVariant \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QApplication \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcoreapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qeventloop.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qdesktopwidget.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qguiapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qinputmethod.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QCheckBox \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qcheckbox.h \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qabstractbutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QGridLayout \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qgridlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlayoutitem.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qboxlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QHBoxLayout \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QLabel \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlabel.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qframe.h \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QLineEdit \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlineedit.h \
-		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qframe.h \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextcursor.h \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextformat.h \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/qpen.h \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextoption.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QMenuBar \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qmenubar.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qmenu.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qaction.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qactiongroup.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QPushButton \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qpushbutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QRadioButton \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qradiobutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QSpacerItem \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QTextBrowser \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtextbrowser.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtextedit.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qabstractscrollarea.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextdocument.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QToolBar \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtoolbar.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QVBoxLayout \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/QKeyEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QGraphicsSimpleTextItem \
-		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qgraphicsitem.h
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qgraphicsitem.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QAction
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../mainwindow.cpp
 
 FileLoger.o: ../../Logger/FileLoger.cpp ../../Logger/FileLoger.hpp \
@@ -2097,6 +2262,115 @@ Loger.o: ../../Logger/Loger.cpp ../../Logger/Loger.hpp \
 		../../Logger/StatusInterface.hpp \
 		../../Logger/consoleLoger.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Loger.o ../../Logger/Loger.cpp
+
+sendProperties.o: ../../sendProperties.cpp ../../sendProperties.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qwidget.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgetsglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtguiglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qglobal.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qconfig-bootstrapped.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qconfig.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtcore-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsystemdetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qprocessordetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcompilerdetection.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtypeinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsysinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlogging.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qflags.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbasicatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_bootstrap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qgenericatomic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_cxx11.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qatomic_msvc.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qglobalstatic.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmutex.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qnumeric.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qversiontagging.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtgui-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qtwidgets-config.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qwindowdefs.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobjectdefs.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qnamespace.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobjectdefs_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qwindowdefs_win.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobject.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstring.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qchar.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbytearray.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qrefcount.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qarraydata.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringliteral.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringalgorithms.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringview.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringbuilder.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qalgorithms.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qiterator.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qhashfunctions.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qpair.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qbytearraylist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringlist.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qregexp.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qstringmatcher.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcoreevent.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qscopedpointer.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmetatype.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvarlengtharray.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcontainerfwd.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qobject_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmargins.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpaintdevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qrect.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsize.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qpoint.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpalette.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qcolor.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qrgb.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qrgba64.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qbrush.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvector.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qmatrix.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpolygon.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qregion.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qdatastream.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qiodevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qline.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtransform.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpainterpath.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qimage.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpixelformat.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpixmap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsharedpointer.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qshareddata.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qhash.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qsharedpointer_impl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfont.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfontmetrics.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qfontinfo.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qsizepolicy.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qcursor.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qkeysequence.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qevent.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qvariant.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qmap.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qdebug.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qtextstream.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qlocale.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qset.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcontiguouscache.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qurl.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qurlquery.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qfile.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qfiledevice.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qvector2d.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtouchdevice.h \
+		../../credentials.hpp \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/QString \
+		ui_sendproperties.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sendProperties.o ../../sendProperties.cpp
 
 startup.o: ../../startup.cpp ../../startup.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QWidget \
@@ -2211,8 +2485,36 @@ startup.o: ../../startup.cpp ../../startup.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QEvent \
 		/home/blabu/IDE/Qt/5.13/include/QtCore/QMutex \
 		../../credentials.hpp \
+		../../sendProperties.hpp \
 		/home/blabu/IDE/Qt/5.13/include/QtGui/QKeyEvent \
 		ui_Startup.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/QVariant \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QApplication \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qcoreapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtCore/qeventloop.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qdesktopwidget.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qguiapplication.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qinputmethod.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QHBoxLayout \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qboxlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlayoutitem.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qgridlayout.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QLabel \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlabel.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qframe.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QLineEdit \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qlineedit.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextcursor.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextformat.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qpen.h \
+		/home/blabu/IDE/Qt/5.13/include/QtGui/qtextoption.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QPushButton \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qpushbutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/qabstractbutton.h \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QSpacerItem \
+		/home/blabu/IDE/Qt/5.13/include/QtWidgets/QVBoxLayout \
 		../../MainProjectLoger.hpp \
 		../../Logger/Loger.hpp \
 		../../Logger/ILogerWriter.h \
@@ -2237,6 +2539,9 @@ moc_ReadWriteTcp.o: moc_ReadWriteTcp.cpp
 
 moc_StringProtocolConnector.o: moc_StringProtocolConnector.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_StringProtocolConnector.o moc_StringProtocolConnector.cpp
+
+moc_sendProperties.o: moc_sendProperties.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_sendProperties.o moc_sendProperties.cpp
 
 moc_startup.o: moc_startup.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_startup.o moc_startup.cpp

@@ -23,6 +23,7 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     Logger/FileLoger.cpp \
     Logger/Loger.cpp \
+    sendProperties.cpp \
     startup.cpp
 
 HEADERS  += mainwindow.h \
@@ -40,10 +41,12 @@ HEADERS  += mainwindow.h \
     credentials.hpp \
     cryptMessages.hpp \
     middlewareInterface.hpp \
+    sendProperties.hpp \
     startup.hpp
 
 FORMS    += mainwindow.ui \
-            Startup.ui
+            Startup.ui \
+            sendproperties.ui
 
 DISTFILES +=
 

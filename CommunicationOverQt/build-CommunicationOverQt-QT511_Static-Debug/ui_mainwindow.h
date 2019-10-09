@@ -11,6 +11,7 @@
 
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
@@ -18,6 +19,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
@@ -32,6 +34,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionSend;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
@@ -51,26 +54,12 @@ public:
     QPushButton *Connect;
     QPushButton *Disconnect;
     QSpacerItem *horizontalSpacer_5;
-    QHBoxLayout *horizontalLayout_5;
-    QSpacerItem *horizontalSpacer_6;
-    QLabel *label;
-    QLineEdit *baudrate;
-    QLabel *label_3;
-    QLineEdit *rs232Timeout;
-    QLabel *label_4;
-    QLineEdit *modemTimeout;
-    QSpacerItem *horizontalSpacer_3;
-    QHBoxLayout *horizontalLayout_6;
-    QSpacerItem *horizontalSpacer_7;
-    QLabel *label_5;
-    QLineEdit *newServer;
-    QPushButton *sendProp;
-    QSpacerItem *horizontalSpacer_8;
     QSpacerItem *verticalSpacer_2;
     QTextBrowser *receivedMsg;
     QSpacerItem *verticalSpacer;
     QLineEdit *transmitMsg;
     QMenuBar *menuBar;
+    QMenu *menuSendProperties;
     QToolBar *mainToolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -79,6 +68,8 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(659, 517);
         MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom));
+        actionSend = new QAction(MainWindow);
+        actionSend->setObjectName(QStringLiteral("actionSend"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -177,79 +168,6 @@ public:
 
         base->addLayout(horizontalLayout_4);
 
-        horizontalLayout_5 = new QHBoxLayout();
-        horizontalLayout_5->setSpacing(6);
-        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_5->addItem(horizontalSpacer_6);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-
-        horizontalLayout_5->addWidget(label);
-
-        baudrate = new QLineEdit(centralWidget);
-        baudrate->setObjectName(QStringLiteral("baudrate"));
-
-        horizontalLayout_5->addWidget(baudrate);
-
-        label_3 = new QLabel(centralWidget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        horizontalLayout_5->addWidget(label_3);
-
-        rs232Timeout = new QLineEdit(centralWidget);
-        rs232Timeout->setObjectName(QStringLiteral("rs232Timeout"));
-
-        horizontalLayout_5->addWidget(rs232Timeout);
-
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
-
-        horizontalLayout_5->addWidget(label_4);
-
-        modemTimeout = new QLineEdit(centralWidget);
-        modemTimeout->setObjectName(QStringLiteral("modemTimeout"));
-
-        horizontalLayout_5->addWidget(modemTimeout);
-
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_5->addItem(horizontalSpacer_3);
-
-
-        base->addLayout(horizontalLayout_5);
-
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setSpacing(6);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_6->addItem(horizontalSpacer_7);
-
-        label_5 = new QLabel(centralWidget);
-        label_5->setObjectName(QStringLiteral("label_5"));
-
-        horizontalLayout_6->addWidget(label_5);
-
-        newServer = new QLineEdit(centralWidget);
-        newServer->setObjectName(QStringLiteral("newServer"));
-
-        horizontalLayout_6->addWidget(newServer);
-
-        sendProp = new QPushButton(centralWidget);
-        sendProp->setObjectName(QStringLiteral("sendProp"));
-
-        horizontalLayout_6->addWidget(sendProp);
-
-        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_6->addItem(horizontalSpacer_8);
-
-
-        base->addLayout(horizontalLayout_6);
-
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         base->addItem(verticalSpacer_2);
@@ -281,10 +199,15 @@ public:
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 659, 23));
+        menuSendProperties = new QMenu(menuBar);
+        menuSendProperties->setObjectName(QStringLiteral("menuSendProperties"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
+
+        menuBar->addAction(menuSendProperties->menuAction());
+        menuSendProperties->addAction(actionSend);
 
         retranslateUi(MainWindow);
 
@@ -294,6 +217,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+        actionSend->setText(QApplication::translate("MainWindow", "Send", nullptr));
         indicator->setText(QApplication::translate("MainWindow", "Offline", nullptr));
         sendEverybody->setText(QApplication::translate("MainWindow", "Publish for all", nullptr));
         base64->setText(QApplication::translate("MainWindow", "Base64", nullptr));
@@ -302,12 +226,8 @@ public:
         Identifier->setPlaceholderText(QApplication::translate("MainWindow", "Connect to identifier", nullptr));
         Connect->setText(QApplication::translate("MainWindow", "Connect", nullptr));
         Disconnect->setText(QApplication::translate("MainWindow", "Disconnect", nullptr));
-        label->setText(QApplication::translate("MainWindow", "RS232 speed", nullptr));
-        label_3->setText(QApplication::translate("MainWindow", "RS232 timeout", nullptr));
-        label_4->setText(QApplication::translate("MainWindow", "Modem timout", nullptr));
-        label_5->setText(QApplication::translate("MainWindow", "Server IP", nullptr));
-        sendProp->setText(QApplication::translate("MainWindow", "SendProperties", nullptr));
         transmitMsg->setPlaceholderText(QApplication::translate("MainWindow", "Compose message", nullptr));
+        menuSendProperties->setTitle(QApplication::translate("MainWindow", "Properties", nullptr));
     } // retranslateUi
 
 };

@@ -7,6 +7,7 @@
 #include <QMutex>
 #include <atomic>
 #include "credentials.hpp"
+#include "sendProperties.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
 private slots:
     void connectButtonPressed();
     void showText(const QString& m, bool isSendedByMe);
-    void sendPropSlot();
+    void sendPropSlot(ModemProperties modem);
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -38,6 +39,7 @@ public slots:
     void connectBy(const QString &userName);
 private:
     Ui::MainWindow *ui;
+    sendProperties *properties;
     QMutex uiMtx;
     Credentials cr;
     std::atomic<bool> isConnected;

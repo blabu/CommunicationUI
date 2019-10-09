@@ -6,17 +6,25 @@
 #include <QLineEdit>
 #include <QKeyEvent>
 #include <QGraphicsSimpleTextItem>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    properties = new sendProperties();
+    properties->hide();
     QObject::connect(ui->Connect, SIGNAL(pressed()), this, SLOT(connectButtonPressed()));
     QObject::connect(ui->Disconnect, SIGNAL(pressed()), this, SLOT(disconnect()));
-    QObject::connect(ui->sendProp, SIGNAL(pressed()), this, SLOT(sendPropSlot()));
+    QObject::connect(properties, &sendProperties::cancelPressed, [this](){this->properties->hide();});
+    QObject::connect(properties, SIGNAL(sendPressed(ModemProperties)), this, SLOT(sendPropSlot(ModemProperties)));
+    QObject::connect(ui->actionSend, &QAction::triggered, [this]() {
+        this->properties->show();
+    });
     QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
     QObject::connect(ui->sessionKey, &QLineEdit::textChanged, [this](const QString& str) {emit sessionKeyChanged(str); } );
     QObject::connect(ui->sendEverybody, &QPushButton::pressed, [this]() {emit sendEverybody(); this->sendLastText(); } );
+
     disconnect();
 }
 
@@ -66,12 +74,8 @@ void MainWindow::showText(const QString &m, bool isSendedByMe){
     uiMtx.unlock();
 }
 
-void MainWindow::sendPropSlot() {
-    ModemProperties modem;
-    modem.baudrate = ui->baudrate->text();
-    modem.modemTimeout = ui->modemTimeout->text();
-    modem.rs232Timeout = ui->rs232Timeout->text();
-    modem.serverIP = ui->newServer->text();
+void MainWindow::sendPropSlot(ModemProperties modem) {
+    properties->hide();
     globalLog.addLog(Loger::L_TRACE, "Send propeties");
     globalLog.addLog(Loger::L_TRACE, modem.baudrate.toStdString());
     globalLog.addLog(Loger::L_TRACE, modem.rs232Timeout.toStdString());
@@ -87,6 +91,7 @@ void MainWindow::receiveText(const QString& message) {
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete properties;
 }
 
 void MainWindow::disconnect() {

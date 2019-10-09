@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[23];
-    char stringdata0[256];
+    QByteArrayData data[24];
+    char stringdata0[262];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,12 +48,13 @@ QT_MOC_LITERAL(13, 135, 20), // "connectButtonPressed"
 QT_MOC_LITERAL(14, 156, 8), // "showText"
 QT_MOC_LITERAL(15, 165, 12), // "isSendedByMe"
 QT_MOC_LITERAL(16, 178, 12), // "sendPropSlot"
-QT_MOC_LITERAL(17, 191, 11), // "receiveText"
-QT_MOC_LITERAL(18, 203, 7), // "message"
-QT_MOC_LITERAL(19, 211, 10), // "disconnect"
-QT_MOC_LITERAL(20, 222, 14), // "connectionFine"
-QT_MOC_LITERAL(21, 237, 9), // "connectBy"
-QT_MOC_LITERAL(22, 247, 8) // "userName"
+QT_MOC_LITERAL(17, 191, 5), // "modem"
+QT_MOC_LITERAL(18, 197, 11), // "receiveText"
+QT_MOC_LITERAL(19, 209, 7), // "message"
+QT_MOC_LITERAL(20, 217, 10), // "disconnect"
+QT_MOC_LITERAL(21, 228, 14), // "connectionFine"
+QT_MOC_LITERAL(22, 243, 9), // "connectBy"
+QT_MOC_LITERAL(23, 253, 8) // "userName"
 
     },
     "MainWindow\0tryConnect\0\0Credentials\0"
@@ -61,9 +62,9 @@ QT_MOC_LITERAL(22, 247, 8) // "userName"
     "sessionKeyChanged\0sendEverybody\0"
     "sendPropSignal\0ModemProperties\0m\0"
     "connectButtonPressed\0showText\0"
-    "isSendedByMe\0sendPropSlot\0receiveText\0"
-    "message\0disconnect\0connectionFine\0"
-    "connectBy\0userName"
+    "isSendedByMe\0sendPropSlot\0modem\0"
+    "receiveText\0message\0disconnect\0"
+    "connectionFine\0connectBy\0userName"
 };
 #undef QT_MOC_LITERAL
 
@@ -91,11 +92,11 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: name, argc, parameters, tag, flags
       13,    0,   93,    2, 0x08 /* Private */,
       14,    2,   94,    2, 0x08 /* Private */,
-      16,    0,   99,    2, 0x08 /* Private */,
-      17,    1,  100,    2, 0x0a /* Public */,
-      19,    0,  103,    2, 0x0a /* Public */,
-      20,    0,  104,    2, 0x0a /* Public */,
-      21,    1,  105,    2, 0x0a /* Public */,
+      16,    1,   99,    2, 0x08 /* Private */,
+      18,    1,  102,    2, 0x0a /* Public */,
+      20,    0,  105,    2, 0x0a /* Public */,
+      21,    0,  106,    2, 0x0a /* Public */,
+      22,    1,  107,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -108,11 +109,11 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString, QMetaType::Bool,   12,   15,
+    QMetaType::Void, 0x80000000 | 11,   17,
+    QMetaType::Void, QMetaType::QString,   19,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   18,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   22,
+    QMetaType::Void, QMetaType::QString,   23,
 
        0        // eod
 };
@@ -131,7 +132,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 5: _t->sendPropSignal((*reinterpret_cast< ModemProperties(*)>(_a[1]))); break;
         case 6: _t->connectButtonPressed(); break;
         case 7: _t->showText((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 8: _t->sendPropSlot(); break;
+        case 8: _t->sendPropSlot((*reinterpret_cast< ModemProperties(*)>(_a[1]))); break;
         case 9: _t->receiveText((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 10: _t->disconnect(); break;
         case 11: _t->connectionFine(); break;
