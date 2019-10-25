@@ -54,9 +54,12 @@ public:
     QPushButton *Connect;
     QPushButton *Disconnect;
     QSpacerItem *horizontalSpacer_5;
-    QSpacerItem *verticalSpacer_2;
     QTextBrowser *receivedMsg;
-    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_6;
+    QSpacerItem *horizontalSpacer_3;
+    QPushButton *clearBtn;
+    QSpacerItem *horizontalSpacer_7;
     QLineEdit *transmitMsg;
     QMenuBar *menuBar;
     QMenu *menuSendProperties;
@@ -168,10 +171,6 @@ public:
 
         base->addLayout(horizontalLayout_4);
 
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        base->addItem(verticalSpacer_2);
-
         receivedMsg = new QTextBrowser(centralWidget);
         receivedMsg->setObjectName(QStringLiteral("receivedMsg"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -182,9 +181,28 @@ public:
 
         base->addWidget(receivedMsg);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        base->addItem(verticalSpacer);
+        horizontalLayout_5->addItem(horizontalSpacer_6);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_3);
+
+        clearBtn = new QPushButton(centralWidget);
+        clearBtn->setObjectName(QStringLiteral("clearBtn"));
+
+        horizontalLayout_5->addWidget(clearBtn);
+
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_7);
+
+
+        base->addLayout(horizontalLayout_5);
 
         transmitMsg = new QLineEdit(centralWidget);
         transmitMsg->setObjectName(QStringLiteral("transmitMsg"));
@@ -226,6 +244,7 @@ public:
         Identifier->setPlaceholderText(QApplication::translate("MainWindow", "Connect to identifier", nullptr));
         Connect->setText(QApplication::translate("MainWindow", "Connect", nullptr));
         Disconnect->setText(QApplication::translate("MainWindow", "Disconnect", nullptr));
+        clearBtn->setText(QApplication::translate("MainWindow", "Clear", nullptr));
         transmitMsg->setPlaceholderText(QApplication::translate("MainWindow", "Compose message", nullptr));
         menuSendProperties->setTitle(QApplication::translate("MainWindow", "Properties", nullptr));
     } // retranslateUi

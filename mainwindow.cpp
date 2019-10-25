@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->Disconnect, &QPushButton::pressed, [this](){emit pressedDisconnect();});
     QObject::connect(ui->sessionKey, &QLineEdit::textChanged, [this](const QString& str) {emit sessionKeyChanged(str); } );
     QObject::connect(ui->sendEverybody, &QPushButton::pressed, [this]() {emit sendEverybody(); this->sendLastText(); } );
-
+    QObject::connect(ui->clearBtn, &QPushButton::pressed, [this](){this->ui->receivedMsg->clear();});
     disconnect();
 }
 
