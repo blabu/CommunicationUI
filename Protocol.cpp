@@ -4,16 +4,16 @@
 #include <botan/system_rng.h>
 #include <botan/sha2_32.h>
 
-const QString Protocol::registerMessage("$V1;%1;0;3;%2###%3"); // local name, message size, BASE64((SHA256(name + password))
+const QString Protocol::registerMessage("$V1;%1;0;3;3;%2###%3"); // local name, message size, BASE64((SHA256(name + password))
 const QString Protocol::registerOkMessage("$V1;0;%1;3;");      // local name
-const QString Protocol::initMessage("$V1;%1;0;6;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
-const QString Protocol::initOkMessage("$V1;0;%1;6;7###INIT OK"); // local name
-const QString Protocol::connectMessage("$V1;%1;%2;8;0###"); //local name, to name
-const QString Protocol::connectOkMessage("$V1;%1;%2;8;a###CONNECT OK"); // to name, local name
-const QString Protocol::pingCMD("$V1;%1;0;2;0###"); // local name
-const QString Protocol::dataCMD("$V1;%1;%2;9;%3###"); //local name, to, message size
-const QString Protocol::disconnectCMD("$V1;%1;%2;a;0###");
-const QString Protocol::propertiesCMD("$V1;%1;%2;b;%3###%4");
+const QString Protocol::initMessage("$V1;%1;0;6;3;%2###%3"); // local name, message size, (salt + ; + BASE64(SHA256(name + salt + BASE64(SHA256(name + password)))
+const QString Protocol::initOkMessage("$V1;0;%1;6;2;7###INIT OK"); // local name
+const QString Protocol::connectMessage("$V1;%1;%2;8;3;0###"); //local name, to name
+const QString Protocol::connectOkMessage("$V1;%1;%2;8;2;a###CONNECT OK"); // to name, local name
+const QString Protocol::pingCMD("$V1;%1;0;2;1;0###"); // local name
+const QString Protocol::dataCMD("$V1;%1;%2;9;3;%3###"); //local name, to, message size
+const QString Protocol::disconnectCMD("$V1;%1;%2;a;3;0###");
+const QString Protocol::propertiesCMD("$V1;%1;%2;b;3;%3###%4");
 
 const std::string Protocol::passwordHash(QString pass) const {
     return Botan::base64_encode(Botan::SHA_256().process(name.toStdString() + pass.toStdString()));
